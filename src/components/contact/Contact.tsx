@@ -1,7 +1,25 @@
-import React from 'react'
 
 export const Contact = () => {
     return (
-        <div>Contact</div>
+        <div className=' flex items-center lg:justify-center justify-start'>
+            <div className="p-8 my-4 lg:shadow-md lg:shadow-black lg:rounded-xl w-auto">
+                <h2 className='text-[#062a76] text-3xl font-bold mb-4'>Contacto</h2>
+
+                <div className="flex flex-col items-start justify-start gap-4">
+                    <div className="flex items-center font-semibold cursor-pointer">
+                        <span className="material-icons-outlined text-[#098033] mr-2">call</span>
+                        <span className='text-gray-700'>+58 414-6355951</span>
+                    </div>
+                    <div className="flex items-center font-semibold cursor-pointer">
+                        <span className="material-icons-outlined text-[#098033] mr-2">mail</span>
+                        <span className='text-gray-700'>keith.quilarquez@gempro.com.ve</span>
+                    </div>
+                    <div className="flex items-center font-semibold cursor-pointer">
+                        <span className="material-icons-outlined text-[#098033] mr-2">location_on</span>
+                        <span className='text-gray-700'>Urb. Urdaneta. Av. Principal con calle 9 </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
