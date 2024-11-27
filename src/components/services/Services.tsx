@@ -31,7 +31,7 @@ export const Services = () => {
             </div>
 
             <div className="lg:hidden">
-                <Carousel responsive={responsive}  autoPlay infinite className="!h-full text-white">
+                <Carousel responsive={responsive} autoPlay infinite className="!h-full text-white">
                     {predictive && predictive.map((service: IServices, index: number) => (
                         <Card key={index} name={service.title} description={service.description}></Card>
                     ))}
