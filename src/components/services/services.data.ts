@@ -47,4 +47,61 @@ export const predictive: IServices[] = [
         title: 'Análisis de Aceites Lubricantes',
         description: 'La lubricación de un equipo rotativo, es de suma importancia, pues evita el roce metálico de sus componentes, si esto ocurriera, se vería afectada la integridad y se generaría un desgaste acelerado de la pieza rotativa. Conscientes de que se puede generar una contaminación del fluido vital de las piezas rotativas, GEMPRO SA, tiene convenios con empresas dedicadas a la manufactura de lubricantes para proveer un servicio óptimo de análisis de grasas y aceites donde la empresa pueda conocer el estado exacto de las misma, su uso óptimo y su correcta aplicación.'
     }
+];
+
+export const preventivos: IServices[] = [
+    {
+        title: 'mp software',
+        description: 'Esta herramienta digital profesional, se convierte en una verdadera aliada para llevar el control y administración del mantenimiento de forma precisa para una verdadera gestión de las necesidades reales de su empresa. No importa cuál sea el tamaño de su empresa, es tan versátil que permite su implementación en cualquier lugar, por difícil que sea el acceso a su equipo y maquinaria sujeta a mantenimiento. Industrias, hospitales, hoteles, constructoras, flotillas y diversas empresas se pueden beneficiar de sus bondades.'
+    },
+    {
+        title: 'CyberMaint',
+        description: 'Ideado para optimizar la calidad de su gestión de mantenimiento, mediante el uso de Internet, usted podrá accesar a sus bases de datos desde cualquier lugar para generar planes de mantenimiento, asignación de recursos, reportes diarios, control de inventarios y herramientas, además podrá tener toda la información que necesita a tiempo en sus manos. GEMPRO SA a través de CyberMaint le puede ofrecer este novedoso servicio.'
+    }
+];
+
+export const correctivos: IServices[] = [
+    {
+        title: 'Balanceo Dínamico en el taller',
+        description: 'Disponemos de todo el instrumental y sistema de cálculo requerido para realizar en el taller un balanceo de precisión ISO, controlando el nivel de vibraciones, el ángulo de fase y las revoluciones, reducir a su mínima expresión el desbalance residual.'
+    },
+    {
+        title: 'Mecanizado en sitio',
+        description: 'Tenemos a disposición y diseñamos máquinas y herramientas de acuerdo a las necesidades de mecanizado en sitio tanto en aplicaciones terrestres como navales, acompañado de un personal técnico especializado con más de 20 años de experiencia en el área, logrando trabajos de alta precisión utilizando la técnica de mediciones láser.'
+    }, 
+    {
+        title: 'Nivelación de bases',
+        description: 'Para condiciones de desnivel en bases y superficies contamos con equipos de tecnología de punta de nivelación láser que permiten realizar una nivelación rápida y precisa, además de ello, nuestro personal técnico está certificado internacionalmente contando con una poderosa capacidad de respuesta.'
+    },
+    {
+        title: 'Alineación de Bancadas',
+        description: 'Contamos con la tecnología láser y la experiencia soportada por más de 25 años, necesaria para realizar este tipo de alineaciones con un alto índice de precisión requerido en bloques de motores, compresores e instalaciones navales. GEMPRO SA, está dispuesta a brindarle apoyo para su acceso a esta tecnología de mediciones geométricas con tecnología láser.'
+    }
+];
+
+export const proactivo: IServices[] =[
+    {
+        title: 'Alineación de Equipos Rotativos',
+        description: 'Lograr la concentricidad de dos ejes con los sistemas Easy Láser es muy seguro por su modalidad de leer en tres posiciones 9-12-3 por medio de unidades M-S montadas en cada uno de los ejes. El sistema lee y calcula las correcciones requeridas en la máquina móvil, para lograr una alineación perfecta. Motores, bombas, compresores, cajas de engranajes, turbinas a gas o vapor, generadores, torres de enfriamiento, el límite es su imaginación.'
+    },
+    {
+        title: 'Geometría de Ingenieria',
+        description: 'Grandes máquinas industriales como turbinas hidráulicas, turbinas a gas, turbinas a vapor, generadores, torres eólicas, motores, etc, requieren mucha precisión geométrica en sus montajes para garantizar su correcto acoplamiento y funcionamiento. GEMPRO SA, mediante el uso de la tecnología láser puede medir la planitud y nivelación de las bases de montaje, la concentricidad de cojinetes, toberas, diafragmas y sellos, la verticalidad, rectilinealidad y el paralelismo de ejes.'
+    },
+    {
+        title: 'Medición de ruidos industriales',
+        description: 'El nivel de ruido en el ambiente de trabajo afecta la salud y la seguridad del trabajador, por eso existen leyes y normas que controlan los niveles de ruido ambiental en el trabajo. GEMPRO SA, los guiará en la dirección correcta realizando evaluaciones periódicas de los niveles y dosis de ruido y el estrés que este produce en los trabajadores.'
+    },
+    {
+        title: 'Aplicaciones navales',
+        description: 'En astilleros y diques secos, durante la construcción y mantenimiento de las líneas de propulsión de barcos de mediano y gran calado es necesario la alineación entre caja, eje de potencia, ejes intermedios, tubo codaste arbotantes porta hélice. GEMPRO SA, dispone de la tecnología y amplia experiencia para lograr los patrones de alineación requeridos según ABS.'
+    },
+    {
+        title: 'Alineación de poleas',
+        description: 'Contamos con un equipo de alineación de poleas láser que consiste en un emisor laser que se coloca en la polea conductora y los receptores o referencias en la polea conducida, este mismo emite un rayo que incide en las referencias e indica el estado de desalineación del equipo. Utilizando esta técnica logramos reducir las fallas de los equipos por desalineación al mismo tiempo que reducir costos de mantenimiento.'
+    },
+    {
+        title: 'Balanceo Dinámico en sitio',
+        description: 'Hemos desarrollado métodos para balancear rotores en sitio en uno, dos y múltiples planos. Podemos obtener suficiente información para calcular el coeficiente de influencia entre los cojinetes, sensibilidad del rotor, ángulo de atraso, datos que, combinados a un algoritmo matemático, permiten determinar la cantidad de peso y el ángulo correcto de instalación.'
+    }
 ]

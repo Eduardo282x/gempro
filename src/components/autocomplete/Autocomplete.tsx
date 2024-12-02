@@ -14,27 +14,37 @@ import {
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { Check, ChevronsUpDown } from "lucide-react"
-import { FC, useState } from "react"
-
-export interface IComplete {
-    value: string
-    label: string
-}
+import { FC, useRef, useState } from "react"
+import { IOptions } from "@/interfaces/base.interface"
 
 export interface IAutoComplete {
-    dataComplete: IComplete[]
+    dataComplete: IOptions[]
     value: string;
     onChange: (value: string) => void;
 }
 
 export const Autocomplete: FC<IAutoComplete> = ({ dataComplete, value, onChange }) => {
     const [open, setOpen] = useState<boolean>(false);
+    const triggerRef = useRef<HTMLButtonElement>(null);
 
     return (
         <div className="w-full">
-            <Popover open={open} onOpenChange={setOpen} >
+            <Popover
+
+                open={open}
+                onOpenChange={(isOpen) => {
+                    setOpen(isOpen);
+
+                    if (isOpen && triggerRef.current) {
+                        const triggerWidth = triggerRef.current.offsetWidth;
+                        document.documentElement.style.setProperty("--trigger-width", `${triggerWidth}px`);
+                    }
+                }}
+
+            >
                 <PopoverTrigger asChild>
                     <Button
+                        ref={triggerRef}
                         variant="outline"
                         role="combobox"
                         aria-expanded={open}
@@ -46,7 +56,11 @@ export const Autocomplete: FC<IAutoComplete> = ({ dataComplete, value, onChange 
                         <ChevronsUpDown className="opacity-50" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-full lg:w-[91rem] p-0">
+                <PopoverContent
+                    align="start"
+                    className="p-0"
+                    style={{ width: "var(--trigger-width)" }}
+                >
                     <Command>
                         <CommandInput placeholder="Buscando correo..." />
                         <CommandList>
@@ -55,7 +69,7 @@ export const Autocomplete: FC<IAutoComplete> = ({ dataComplete, value, onChange 
                                 {dataComplete.map((framework) => (
                                     <CommandItem
                                         key={framework.value}
-                                        value={framework.value}
+                                        value={framework.value.toString()}
                                         onSelect={(currentValue) => {
                                             onChange(currentValue === value ? "" : currentValue);
                                             setOpen(false);

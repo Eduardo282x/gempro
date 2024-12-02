@@ -1,73 +1,59 @@
+import { getDataApi } from '@/backend/basicAPI'
+import { CardFiles } from '@/components/cardFiles/CardFiles'
+import { FilterReports } from '@/components/filters/filterReports'
 import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Eye, Pencil, Trash2, Download } from 'lucide-react'
-import { useState } from 'react'
-
-interface IReport {
-    id: number
-    fileName: string
-    company: string
-    date: string
-}
-
-const reports = [
-    { id: 1, fileName: 'Reporte_Enero.pdf', company: 'Empresa A', date: '2024-01-15' },
-    { id: 2, fileName: 'Informe_Febrero.docx', company: 'Empresa B', date: '2024-02-20' },
-]
+import { formatDate } from '@/helper/parsers'
+import { IFiles } from '@/interfaces/user.interface'
+import { Eye, Download } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 export const Files = () => {
-    const [selectedReport, setSelectedReport] = useState<IReport | null>(null)
+    const [reportsFiles, setReportsFiles] = useState<IFiles[]>([])
+    const [selectedReport, setSelectedReport] = useState<IFiles | null>(null)
 
-    const openReportDialog = (report: IReport) => {
+    const openReportDialog = (report: IFiles) => {
         setSelectedReport(report)
     }
 
+    const getReportFilesApi = async () => {
+        await getDataApi('/files').then((response: IFiles[]) => {
+            setReportsFiles(response)
+        })
+    }
+
+    useEffect(() => {
+        getReportFilesApi()
+    }, [])
+
     return (
         <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {reports.map((report) => (
-                    <Card key={report.id} className="flex flex-col">
-                        <CardHeader>
-                            <CardTitle className="text-lg">{report.fileName}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-gray-500">Empresa: {report.company}</p>
-                            <p className="text-sm text-gray-500">Fecha: {report.date}</p>
-                        </CardContent>
-                        <CardFooter className="flex justify-between mt-auto">
-                            <Button variant="outline" size="sm" onClick={() => openReportDialog(report)}>
-                                <Eye className="mr-2 h-4 w-4" />
-                                Ver
-                            </Button>
-                            <div>
-                                <Button variant="ghost" size="icon" className="mr-2">
-                                    <Pencil className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="icon">
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
+
+            <div className="w-full">
+                <FilterReports></FilterReports>
+            </div>
+
+            <div className="flex flex-col items-center justify-start w-full h-80 overflow-auto">
+                {reportsFiles.map((report: IFiles) => (
+                    <CardFiles key={report.id} file={report} openReportDialog={openReportDialog}></CardFiles>
                 ))}
             </div>
 
             <Dialog open={selectedReport !== null} onOpenChange={() => setSelectedReport(null)}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{selectedReport?.fileName}</DialogTitle>
+                        <DialogTitle>{selectedReport?.name}</DialogTitle>
                         <DialogDescription>
-                            Empresa: {selectedReport?.company}
+                            Empresa: {selectedReport?.directedTo.company.name}
                             <br />
-                            Fecha: {selectedReport?.date}
+                            Fecha: {formatDate(selectedReport?.uploadedAt.toString() as string)}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex justify-center">
                         <iframe
-                            src={`/placeholder.svg?text=${selectedReport?.fileName}&width=300&height=200`}
+                            src={`/placeholder.svg?text=${selectedReport?.name}&width=300&height=200`}
                             className="w-full h-64 border rounded"
-                            title={selectedReport?.fileName}
+                            title={selectedReport?.name}
                         />
                     </div>
                     <div className="flex justify-end space-x-2">

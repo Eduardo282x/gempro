@@ -24,42 +24,49 @@ export const responsive = {
     }
 };
 
+interface ViewImages {
+    image: string;
+    title: string;
+    text: string;
+}
+
+const viewsImages: ViewImages[] = [
+    {
+        image: carousel1,
+        title: 'Bienvenido',
+        text: 'Prestamos servicio técnico especializado en el área de ingeniería de Mantenimiento Proactivo – Predictivo – Preventivo - Correctivo'
+    },
+    {
+        image: carousel2,
+        title: 'Excelencia',
+        text: 'Nuestro personal altamente capacitado, entrenado y certificado internacionalmente por firmas reconocidas, logra reunir más de 60 años de experiencia dominando tecnologías de alto nivel.'
+    },
+    {
+        image: carousel3,
+        title: 'Proactivos, Predictivos, Preventivos y Correctivos',
+        text: 'Cuatro ejes que conocemos muy bien y los colocamos a tu entero control, en cualquier momento y desde cualquier lugar del mundo.'
+    },
+    {
+        image: carousel4,
+        title: 'Compartir es la clave',
+        text: 'Foros de tecnología dirigidos a diferentes sectores económicos del país, para lograr difundir las nuevas técnicas de mantenimientos empleadas en la actualidad. Somos innovadores, nuestras técnicas exclusivas a la entera disposición de su empresa.'
+    }
+]
+
 export const Main = () => {
     return (
         <div className='w-full h-[35rem] bg-gray-200'>
             <Carousel responsive={responsive} autoPlay infinite className="!h-full text-white">
-                <div className="h-full">
-                    <img src={carousel1} alt="" className="h-full w-full" />
-                    <div className="absolute bottom-20 w-1/2 text-wrap left-0 right-0 mx-auto">
-                        <h3 className="text-4xl">Bienvenido</h3>
-                        <p className="text-2xl">Prestamos servicio técnico especializado en el área de ingeniería de Mantenimiento Proactivo – Predictivo – Preventivo - Correctivo</p>
+                {viewsImages && viewsImages.map((sec: ViewImages, index: number) => (
+                    <div key={index} className="h-full">
+                        <img src={sec.image} alt="" className="h-full w-full" />
+                        <div className="absolute bottom-10 md:bottom-20 w-[80%] md:w-1/2 text-wrap left-0 right-0 mx-auto">
+                            <h3 className="text-2xl md:text-4xl">{sec.title}</h3>
+                            <p className="md:text-2xl">{sec.text}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="h-full">
-                    <img src={carousel2} alt="" className="h-full w-full" />
-                    <div className="absolute bottom-20 w-1/2 text-wrap left-0 right-0 mx-auto">
-                        <h3 className="text-4xl">Excelencia</h3>
-                        <p className="text-2xl">Nuestro personal altamente capacitado, entrenado y certificado
-                            internacionalmente por firmas reconocidas, logra reunir más
-                            de 60 años de experiencia dominando tecnologías de alto nivel.</p>
-                    </div>
-                </div>
-                <div className="h-full">
-                    <img src={carousel3} alt="" className="h-full w-full" />
-                    <div className="absolute bottom-20 w-1/2 text-wrap left-0 right-0 mx-auto">
-                        <h3 className="text-4xl">Proactivos, Predictivos, Preventivos y Correctivos</h3>
-                        <p className="text-2xl">Cuatro ejes que conocemos muy bien y los colocamos a tu entero control, en cualquier momento y desde cualquier lugar del mundo.</p>
-                    </div>
-                </div>
-                <div className="h-full">
-                    <img src={carousel4} alt="" className="h-full w-full" />
-                    <div className="absolute bottom-20 w-1/2 text-wrap left-0 right-0 mx-auto">
-                        <h3 className="text-4xl">Compartir es la clave</h3>
-                        <p className="text-2xl">Foros de tecnología dirigidos a diferentes sectores económicos del país, para lograr difundir las nuevas técnicas de mantenimientos empleadas en la actualidad.
-                            Somos innovadores, nuestras técnicas exclusivas a la entera disposición de su empresa.</p>
-                    </div>
-                </div>
-            </Carousel>;
+                ))}
+            </Carousel>
         </div>
     )
 }

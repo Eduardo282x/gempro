@@ -22,10 +22,10 @@ export const tabsOptions = [
         label: 'Empresas',
         tab: 'companies',
         roles: ['ADMIN']
-    },
-    {
-        label: 'Archivos',
-        tab: 'files',
-        roles: ['ADMIN', 'WORKER', 'COMPANY']
     }
+    // {
+    //     label: 'Archivos',
+    //     tab: 'files',
+    //     roles: ['ADMIN', 'WORKER', 'COMPANY']
+    // }
 ]

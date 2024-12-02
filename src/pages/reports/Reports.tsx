@@ -1,12 +1,12 @@
 import { getDataApi } from '@/backend/basicAPI';
-import { Autocomplete, IComplete } from '@/components/autocomplete/Autocomplete';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Autocomplete } from '@/components/autocomplete/Autocomplete';
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Company, IUser } from '@/interfaces/user.interface';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -17,21 +17,29 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { IOptions } from '@/interfaces/base.interface';
 
 interface IFormReport {
     nameReport: string;
     company: string;
     email: string;
+    secondEmail: string;
     file: File | null;
 }
-export const Reports = () => {
+
+interface IFormReportProps {
+    open: boolean;
+    onClose: (close: boolean) => void;
+    onSubmit: (data: IFormReport) => void;
+}
+export const Reports: FC<IFormReportProps> = ({ open, onClose, onSubmit }) => {
 
     const [companies, setCompanies] = useState<Company[]>([]);
-    const [userCompanies, setUserCompanies] = useState<IComplete[]>([]);
+    const [userCompanies, setUserCompanies] = useState<IOptions[]>([]);
 
     const getUserByCompaniesApi = async (companyId: string) => {
         await getDataApi(`/users/userByCompanies/${companyId}`).then((response: IUser[]) => {
-            const parseComplete: IComplete[] = response.map(users => {
+            const parseComplete: IOptions[] = response.map(users => {
                 return {
                     label: `${users.firstName} ${users.lastName} - ${users.email}`,
                     value: users.email
@@ -56,23 +64,25 @@ export const Reports = () => {
             nameReport: '',
             company: '',
             email: '',
+            secondEmail: '',
             file: null
         }
     })
 
-    const onSubmit = (formSubmit: IFormReport) => {
+    const onSubmitForm = (formSubmit: IFormReport) => {
         console.log(formSubmit);
+        onSubmit(formSubmit);
+        onClose(false);
     }
 
     return (
         <div>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Agregar Reporte</CardTitle>
-                </CardHeader>
-                <CardContent>
+            <Dialog open={open} onOpenChange={onClose}>
+                <DialogContent>
+                    <DialogTitle className='text-center'> Agregar Reporte</DialogTitle>
+
                     <Form {...form}>
-                        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+                        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmitForm)}>
                             <div className="space-y-2">
                                 <Label htmlFor="file">Nombre del reporte</Label>
                                 <Input {...form.register('nameReport')} />
@@ -126,15 +136,36 @@ export const Reports = () => {
                                 )}
                             />
 
+                            <FormField
+                                control={form.control}
+                                name="secondEmail"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Correo secundario (opcional)</FormLabel>
+                                        <FormControl>
+                                            <Autocomplete
+                                                dataComplete={userCompanies}
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
                             <div className="space-y-2">
                                 <Label htmlFor="file">Archivo</Label>
                                 <Input id="file" type="file" placeholder='Selecciona un archivo'  {...form.register('file')} />
                             </div>
-                            <Button type="submit">Agregar Reporte</Button>
+                            <div className="text-center">
+
+                                <Button type="submit">Agregar Reporte</Button>
+                            </div>
                         </form>
                     </Form>
-                </CardContent>
-            </Card>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }

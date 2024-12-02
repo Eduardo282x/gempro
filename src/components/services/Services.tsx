@@ -24,7 +24,7 @@ export const Services = () => {
 
             <h2 className='text-[#062a76] text-3xl font-bold my-4'>Somos Predictivos</h2>
 
-            <div className="hidden lg:grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {predictive && predictive.map((service: IServices, index: number) => (
                     <Card key={index} name={service.title} description={service.description}></Card>
                 ))}

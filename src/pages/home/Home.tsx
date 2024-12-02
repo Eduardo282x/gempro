@@ -12,7 +12,7 @@ export const Home = () => {
             <Header></Header>
             <div id="inicio"><Main></Main></div>
             <div id="nosotros"><Us></Us></div>
-            <div id="adiestramiento">Adiestramiento aqui</div>
+            <div id="adiestramiento" className='p-8 bg-gray-200'>Adiestramiento</div>
             <div id="eventos"><Events></Events></div>
             <div id="servicios"><Services></Services></div>
             <div id="contacto"><Contact></Contact></div>

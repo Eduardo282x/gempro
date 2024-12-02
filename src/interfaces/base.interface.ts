@@ -6,3 +6,8 @@ export interface IBaseResponse {
 export interface IAuthResponse extends IBaseResponse {
     token: string;
 }
+
+export interface IOptions {
+    label: string;
+    value: string | number;
+}

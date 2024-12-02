@@ -1,5 +1,5 @@
 import { useForm, useFormState } from 'react-hook-form';
-import imgGempro from '../../assets/img/gemproLogo2.jpg';
+import imgGempro from '../../assets/img/gemproLogo3.jpg';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,7 +52,7 @@ export const Login = () => {
         <div>
             <div className="min-h-screen flex items-center justify-center">
                 <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-xl">
-                    <div className="flex justify-center mb-8">
+                    <div className="flex justify-center mb-4" onClick={() => navigate('/')}>
                         <img src={imgGempro} alt="Logo" className="w-30 h-20" />
                     </div>
                     <h1 className="text-2xl font-semibold text-center text-gray-700 mt-8 mb-6">Iniciar sesión</h1>
