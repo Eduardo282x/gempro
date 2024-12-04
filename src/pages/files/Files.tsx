@@ -1,6 +1,7 @@
 import { getDataApi } from '@/backend/basicAPI'
 import { CardFiles } from '@/components/cardFiles/CardFiles'
-import { FilterReports } from '@/components/filters/filterReports'
+import { FilterReports } from '@/components/filters/FilterReports'
+import { Loader } from '@/components/loaders/Loader'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { formatDate } from '@/helper/parsers'
@@ -10,6 +11,7 @@ import { useEffect, useState } from 'react'
 
 export const Files = () => {
     const [reportsFiles, setReportsFiles] = useState<IFiles[]>([])
+    const [loader, setLoader] = useState<boolean>(false);
     const [selectedReport, setSelectedReport] = useState<IFiles | null>(null)
 
     const openReportDialog = (report: IFiles) => {
@@ -17,8 +19,10 @@ export const Files = () => {
     }
 
     const getReportFilesApi = async () => {
+        setLoader(true);
         await getDataApi('/files').then((response: IFiles[]) => {
-            setReportsFiles(response)
+            setReportsFiles(response);
+            setLoader(false);
         })
     }
 
@@ -34,9 +38,13 @@ export const Files = () => {
             </div>
 
             <div className="flex flex-col items-center justify-start w-full h-80 overflow-auto">
-                {reportsFiles.map((report: IFiles) => (
+                {reportsFiles && reportsFiles.map((report: IFiles) => (
                     <CardFiles key={report.id} file={report} openReportDialog={openReportDialog}></CardFiles>
                 ))}
+
+                {loader && (
+                    <Loader></Loader>
+                )}
             </div>
 
             <Dialog open={selectedReport !== null} onOpenChange={() => setSelectedReport(null)}>

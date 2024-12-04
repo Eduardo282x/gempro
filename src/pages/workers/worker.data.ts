@@ -19,11 +19,11 @@ export const baseValues: IWorkerForm = {
 }
 
 export const validateSchemaWorker = z.object({
-    firstName: z.string().refine(text => text !== ''),
-    lastName: z.string().refine(text => text !== ''),
-    email: z.string().refine(text => text !== ''),
-    identify: z.string().refine(text => text !== ''),
-    specialty: z.string().refine(text => text !== '')
+    firstName: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
+    lastName: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
+    email: z.string().email({message: 'Este campo es requerido'}),
+    identify: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
+    specialty: z.string().refine(text => text !== '', {message: 'Este campo es requerido'})
 })
 
 export const workerFormData = [
@@ -44,7 +44,7 @@ export const workerFormData = [
         formControl: 'identify'
     },
     {
-        label: 'Técnico',
+        label: 'Cargo',
         formControl:'specialty'
     }
 ]

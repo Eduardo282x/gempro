@@ -23,7 +23,6 @@ interface IFormReport {
     nameReport: string;
     company: string;
     email: string;
-    secondEmail: string;
     file: File | null;
 }
 
@@ -64,7 +63,6 @@ export const Reports: FC<IFormReportProps> = ({ open, onClose, onSubmit }) => {
             nameReport: '',
             company: '',
             email: '',
-            secondEmail: '',
             file: null
         }
     })
@@ -124,24 +122,6 @@ export const Reports: FC<IFormReportProps> = ({ open, onClose, onSubmit }) => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Correo</FormLabel>
-                                        <FormControl>
-                                            <Autocomplete
-                                                dataComplete={userCompanies}
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="secondEmail"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Correo secundario (opcional)</FormLabel>
                                         <FormControl>
                                             <Autocomplete
                                                 dataComplete={userCompanies}

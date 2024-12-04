@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { postDataApi } from '@/backend/basicAPI';
 import { IAuthResponse, IBaseResponse } from '@/interfaces/base.interface';
+import { ScreenLoader } from '@/components/loaders/ScreenLoader';
 
 interface ILogin {
     username: string;
@@ -21,6 +22,7 @@ const validateSchema = z.object({
 export const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [loader, setLoader] = useState<boolean>(false);
     const [messageError, showMessageError] = useState<string>('');
 
     const { register, handleSubmit, control } = useForm<ILogin>({
@@ -38,18 +40,26 @@ export const Login = () => {
     const { isValid } = useFormState({ control });
 
     const onSubmit = async (login: ILogin) => {
+        setLoader(true);
         await postDataApi('/auth', login).then((response: IAuthResponse | IBaseResponse) => {
             if (response.success && 'token' in response) {
                 localStorage.setItem('token', response.token);
-                navigate('/admin/reports');
+                setTimeout(() => {
+                    navigate('/admin/reports');
+                }, 1500);
             } else {
                 showMessageError(response.message)
             }
+
+            setLoader(false);
         })
     }
 
     return (
         <div>
+            {loader && (
+                <ScreenLoader></ScreenLoader>
+            )}
             <div className="min-h-screen flex items-center justify-center">
                 <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-xl">
                     <div className="flex justify-center mb-4" onClick={() => navigate('/')}>

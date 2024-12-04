@@ -14,11 +14,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { IBaseResponse } from '@/interfaces/base.interface';
 import { Switch } from '@/components/ui/switch';
 import { Snackbar } from '@/components/snackbar/Snackbar';
+import { Loader } from '@/components/loaders/Loader';
 export const Workers = () => {
 
     const [workers, setWorkers] = useState<IUser[]>([]);
     const [dataTable, setDataTable] = useState<IUser[]>([]);
     const [showDialog, setShowDialog] = useState<boolean>(false);
+    const [loader, setLoader] = useState<boolean>(false);
     const [changeStatus, setChangeStatus] = useState<boolean>(false);
     const [titleDialog, setTitleDialog] = useState<string>('Agregar');
     const [idUser, setIdUser] = useState<number>(0);
@@ -30,7 +32,7 @@ export const Workers = () => {
         setTimeout(() => setShowSnackbar(false), 3000); // Oculta después de 3 segundos
     };
 
-    const { register, handleSubmit, reset } = useForm<IWorkerForm>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<IWorkerForm>({
         defaultValues: baseValues,
         resolver: zodResolver(validateSchemaWorker),
         mode: 'onChange'
@@ -60,9 +62,11 @@ export const Workers = () => {
     }
 
     const getWorkersApi = async () => {
+        setLoader(true)
         await getDataApi('/users/workers').then((response: IUser[]) => {
-            setWorkers(response)
-            setDataTable(response)
+            setWorkers(response);
+            setDataTable(response);
+            setLoader(false)
         })
     }
 
@@ -127,7 +131,7 @@ export const Workers = () => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {dataTable && dataTable.map((worker) => (
+                                {dataTable && dataTable.length > 0 ? dataTable.map((worker) => (
                                     <TableRow key={worker.id}>
                                         <TableCell>{worker.firstName}</TableCell>
                                         <TableCell>{worker.lastName}</TableCell>
@@ -141,9 +145,20 @@ export const Workers = () => {
                                             </Button>
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                )) :
+                                    <TableRow>
+                                        {!loader && (
+                                            <TableCell colSpan={7} className="text-center py-6 text-gray-500">
+                                                No se encontraron resultados.
+                                            </TableCell>
+                                        )}
+                                    </TableRow>
+                                }
                             </TableBody>
                         </Table>
+                        {loader && (
+                            <Loader></Loader>
+                        )}
                     </div>
                 </CardContent>
             </Card>
@@ -160,6 +175,7 @@ export const Workers = () => {
                             <div key={index} className="space-y-2 my-4">
                                 <Label htmlFor={formData.formControl}>{formData.label}</Label>
                                 <Input {...register(formData.formControl as IWorkerType)} />
+                                {errors[formData.formControl as IWorkerType]?.message && <span className='text-red-500 text-sm ml-2'>{errors[formData.formControl as IWorkerType]?.message?.toString()}</span>}
                             </div>
                         ))}
 

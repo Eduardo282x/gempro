@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label';
 import { baseValues, companiesFormData, ICompaniesForm, ICompaniesType, validateSchemaCompanies } from './companies.data';
 import { Snackbar } from '@/components/snackbar/Snackbar';
 import AutocompleteCompanies from '@/components/autocompleteCompanies/AutocompleteCompanie';
+import { Loader } from '@/components/loaders/Loader';
 
 export const Companies = () => {
 
@@ -22,6 +23,7 @@ export const Companies = () => {
     const [companies, setCompanies] = useState<IOptions[]>([]);
     const [dataTable, setDataTable] = useState<IUser[]>([]);
     const [showDialog, setShowDialog] = useState<boolean>(false);
+    const [loader, setLoader] = useState<boolean>(false);
     const [titleDialog, setTitleDialog] = useState<string>('Agregar');
     const [responseApi, setResponseApi] = useState<IBaseResponse>({} as IBaseResponse);
     const [changeStatus, setChangeStatus] = useState<boolean>(false);
@@ -34,9 +36,11 @@ export const Companies = () => {
     };
 
     const getUserCompaniesApi = async () => {
+        setLoader(true);
         await getDataApi('/users/userCompanies').then((response: IUser[]) => {
             setUserCompanies(response);
-            setDataTable(response)
+            setDataTable(response);
+            setLoader(false)
         })
     }
 
@@ -155,7 +159,7 @@ export const Companies = () => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {dataTable && dataTable.map((company) => (
+                                {dataTable && dataTable.length > 0 ? dataTable.map((company) => (
                                     <TableRow key={company.id}>
                                         <TableCell>{company.company.name}</TableCell>
                                         <TableCell>{company.firstName} {company.lastName}</TableCell>
@@ -169,9 +173,21 @@ export const Companies = () => {
                                             </Button>
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                )) :
+                                    <TableRow>
+                                        {!loader && (
+                                            <TableCell colSpan={7} className="text-center py-6 text-gray-500">
+                                                No se encontraron resultados.
+                                            </TableCell>
+                                        )}
+                                    </TableRow>
+                                }
+
                             </TableBody>
                         </Table>
+                        {loader && (
+                            <Loader></Loader>
+                        )}
                     </div>
                 </CardContent>
             </Card>
