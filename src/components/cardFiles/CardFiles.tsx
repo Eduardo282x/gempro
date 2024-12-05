@@ -15,7 +15,7 @@ export interface ICardFiles {
 export const CardFiles: FC<ICardFiles> = ({ file, openReportDialog }) => {
 
     return (
-        <div className='w-full'>
+        <div className='w-full my-2'>
             <Card key={file.id} className="flex flex-col w-full">
                 <CardHeader className='flex flex-row items-center justify-between w-full'>
                     <CardTitle className="text-lg">{file.name}</CardTitle>

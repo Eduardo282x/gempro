@@ -68,7 +68,6 @@ export const Reports: FC<IFormReportProps> = ({ open, onClose, onSubmit }) => {
     })
 
     const onSubmitForm = (formSubmit: IFormReport) => {
-        console.log(formSubmit);
         onSubmit(formSubmit);
         onClose(false);
     }
@@ -136,7 +135,10 @@ export const Reports: FC<IFormReportProps> = ({ open, onClose, onSubmit }) => {
 
                             <div className="space-y-2">
                                 <Label htmlFor="file">Archivo</Label>
-                                <Input id="file" type="file" placeholder='Selecciona un archivo'  {...form.register('file')} />
+                                <Input id="file" type="file" placeholder='Selecciona un archivo'
+                                    onChange={(e) =>
+                                        form.setValue("file", e.target.files?.[0] || null) // Captura el archivo seleccionado
+                                    } />
                             </div>
                             <div className="text-center">
 

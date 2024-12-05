@@ -1,4 +1,4 @@
-import { getDataApi } from '@/backend/basicAPI'
+import { getDataApi, getDataFileApi } from '@/backend/basicAPI'
 import { CardFiles } from '@/components/cardFiles/CardFiles'
 import { FilterReports } from '@/components/filters/FilterReports'
 import { Loader } from '@/components/loaders/Loader'
@@ -24,6 +24,17 @@ export const Files = () => {
             setReportsFiles(response);
             setLoader(false);
         })
+    }
+
+    const downloadFile = async () => {
+        const response = await getDataFileApi(`/files:${selectedReport?.id}`);
+        const url = window.URL.createObjectURL(response);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = selectedReport?.url as string; // Cambia el nombre del archivo según tus necesidades
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     useEffect(() => {
@@ -69,7 +80,7 @@ export const Files = () => {
                             <Eye className="mr-2 h-4 w-4" />
                             Ver Completo
                         </Button>
-                        <Button>
+                        <Button onClick={() => downloadFile()}>
                             <Download className="mr-2 h-4 w-4" />
                             Descargar
                         </Button>

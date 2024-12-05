@@ -19,6 +19,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Reports } from "../reports/Reports";
+import { postDataFileApi } from "@/backend/basicAPI";
 
 
 type TabValue = 'reports' | 'workers' | 'companies' | 'files'
@@ -51,6 +52,18 @@ export const Admin = () => {
     };
 
     const resultDialogReports = (formResult: any) => {
+        const formData = new FormData();
+        formData.append("senderId", userLogin.id.toString());
+        formData.append("nameReport", formResult.nameReport);
+        formData.append("email", formResult.email);
+        if (formResult.file) {
+            formData.append("file", formResult.file);
+        }
+
+        postDataFileApi('/files', formData).then((response) => {
+            console.log(response);
+        })
+
         console.log(formResult);
     }
     return (

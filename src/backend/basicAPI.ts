@@ -21,7 +21,7 @@ export const getDataFileApi = (endpoint: string) => {
 }
 
 export const getParamsDataApi = (endpoint: string, params: any) => {
-    return axiosInstance.get(endpoint, {params}).then((response) => {
+    return axiosInstance.get(endpoint, { params }).then((response) => {
         return response.data;
     }).catch(err => {
         return err.response.data;
@@ -39,16 +39,22 @@ export const postFilesDataApi = async (endpoint: string, file: File): Promise<IA
     const formData = new FormData();
     formData.append("file", file);
 
-    return await axiosInstance.put(endpoint, formData, { headers: {
-        "Content-Type": "multipart/form-data",
-    },}).then((response) => {
+    return await axiosInstance.put(endpoint, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    }).then((response) => {
         return response.data;
     }).catch((err) => {
         return err.response.data;
     })
 }
 export const postDataFileApi = async (endpoint: string, data: any): Promise<IAuthResponse | IBaseResponse> => {
-    return await axiosInstance.post(endpoint, data, {responseType: 'blob'}).then((response) => {
+    return await axiosInstance.post(endpoint, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    }).then((response) => {
         return response.data;
     }).catch((err) => {
         return err.response.data;
