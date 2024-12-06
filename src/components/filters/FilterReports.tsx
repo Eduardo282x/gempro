@@ -147,7 +147,7 @@ export const FilterReports: FC<IFilterReports> = ({ resultForm }) => {
                         control={form.control}
                         name="company"
                         render={({ field }) => (
-                            <FormItem className="flex items-center justify-center gap-2 ">
+                            <FormItem className="flex flex-col md:flex-row items-center justify-center gap-2 w-1/2 md:w-auto">
                                 <FormLabel className="mt-2 ">Buscar por Empresa:</FormLabel>
                                 <Select
                                     onValueChange={(value) => field.onChange(value)}
@@ -171,7 +171,7 @@ export const FilterReports: FC<IFilterReports> = ({ resultForm }) => {
                         )}
                     />
 
-                    <div className="flex gap-2 ">
+                    <div className="flex flex-col-reverse md:flex-row gap-2 ">
                         <Button type="button" className="bg-red-600 hover:bg-red-800" onClick={resetFilter}>Limpiar</Button>
                         <Button type="submit" className="bg-[#01b033] hover:bg-[#0f9438]">Buscar</Button>
                     </div>

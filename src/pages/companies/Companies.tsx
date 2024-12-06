@@ -126,7 +126,7 @@ export const Companies = () => {
         <div>
             <Card>
                 <CardContent>
-                    <div className='flex items-center gap-5 justify-between w-full my-5 '>
+                    <div className='flex flex-wrap items-center gap-5 justify-between w-full my-5 '>
                         <Input className='w-80' placeholder='Buscador...' onChange={(e) => search(e.target.value)} />
 
                         <Button onClick={() => addNewUserCompany()} className='bg-[#062a76] hover:bg-[#264485]'>

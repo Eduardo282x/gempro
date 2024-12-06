@@ -103,8 +103,8 @@ export const Workers = () => {
         <div>
 
             <Card>
-                <CardContent>
-                    <div className='flex items-center gap-5 justify-between w-full my-5 '>
+                <CardContent className=''>
+                    <div className='flex flex-wrap items-center gap-5 justify-between w-full my-5 '>
                         <Input className='w-80' placeholder='Buscador...' onChange={(e) => search(e.target.value)} />
 
                         <Button onClick={() => addNewWorker()} className='bg-[#062a76] hover:bg-[#264485]'>

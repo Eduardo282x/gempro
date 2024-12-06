@@ -22,7 +22,7 @@ export const CardFiles: FC<ICardFiles> = ({ file, openReportDialog }) => {
                     <p className="text-sm text-gray-500">Fecha: {formatDate(file?.uploadedAt.toString() as string)}</p>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex items-center justify-between w-full">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between w-full">
                         <div>
                             <p className="text-sm text-gray-500">De: {`${file.uploadedBy.firstName} ${file.uploadedBy.lastName}`}</p>
                             <p className="text-sm text-gray-500">Correo: {file.uploadedBy.email}</p>
@@ -34,8 +34,8 @@ export const CardFiles: FC<ICardFiles> = ({ file, openReportDialog }) => {
                             {/* <p className="text-sm text-gray-500">Empresa: {file.directedTo.company.name}</p> */}
                         </div>
 
-                        <div>
-                            <div className=' flex items-center justify-center'>
+                        <div className='w-full mt-3 md:mt-0 md:w-auto'>
+                            <div className=' flex items-center justify-between'>
                                 <Button variant="ghost" size="icon" onClick={() => openReportDialog(file)}>
                                     <Eye className="mr-2 h-4 w-4" />
                                 </Button>

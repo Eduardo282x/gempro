@@ -100,7 +100,10 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
                     </DialogHeader>
                     <div className="flex justify-center">
                         {loadingPreview ? (
-                            <p>Cargando vista previa...</p>
+                            <div className='flex flex-col items-center justify-center'>
+                                <p>Cargando vista previa...</p>
+                                <Loader></Loader>
+                            </div>
                         ) : filePreview ? (
                             selectedReport?.url.endsWith(".pdf") ? (
                                 <iframe

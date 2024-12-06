@@ -93,13 +93,13 @@ export const Admin = () => {
     }
 
     return (
-        <div className="container mx-auto bg-gray-200 h-screen overflow-hidden">
+        <div className="  bg-gray-200 w-screen h-screen overflow-hidden">
             <div className="flex items-center justify-between w-full mb-5 bg-white p-4">
-                <div className='items-center gap-2 hidden md:flex'>
+                <div className='items-center gap-2 flex'>
                     <img src={imgGempro} alt="" className='h-[2rem]  md:h-[3rem]' />
                     {/* <span>Tu mejor opción en mantenimiento</span> */}
 
-                    <div className=' text-xl text-[#041d57] font-extrabold flex flex-col text-center'>
+                    <div className=' text-xl text-[#041d57] font-extrabold hidden md:flex flex-col text-center'>
                         <span>Grupo Empresarial de Mantenimiento Proactivo</span>
                     </div>
                 </div>
@@ -129,7 +129,7 @@ export const Admin = () => {
                     defaultValue="reports"
                     className="space-y-4"
                 >
-                    <div className="flex items-center justify-between w-full">
+                    <div className="flex flex-wrap items-center justify-between w-full">
                         <TabsList>
                             {tabsOptions && tabsOptions.filter(tab => tab.roles.includes(userLogin.role)).map((tab, index: number) => (
                                 <TabsTrigger key={index} value={tab.tab} className="hover:bg-[#098033] hover:text-white">
