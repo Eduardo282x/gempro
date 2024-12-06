@@ -1,6 +1,6 @@
 import { getDataApi, postDataApi, putDataApiNormal } from '@/backend/basicAPI';
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { IUser } from '@/interfaces/user.interface';
 import { PlusCircle, Pencil, Check, X } from 'lucide-react'
@@ -52,8 +52,8 @@ export const Workers = () => {
                 handleShowSnackbar();
             })
         } else {
-            postDataApi('/users/workers', workerForm).then((response: IBaseResponse) => {
-                setResponseApi(response)
+            postDataApi('/users/workers', workerForm).then((response) => {
+                setResponseApi(response as IBaseResponse)
                 getWorkersApi()
                 setShowDialog(false);
                 handleShowSnackbar();
@@ -103,12 +103,8 @@ export const Workers = () => {
         <div>
 
             <Card>
-                <CardHeader>
-                    <CardTitle>Trabajadores</CardTitle>
-                </CardHeader>
                 <CardContent>
-
-                    <div className='flex items-center gap-5 justify-between w-full mb-5 '>
+                    <div className='flex items-center gap-5 justify-between w-full my-5 '>
                         <Input className='w-80' placeholder='Buscador...' onChange={(e) => search(e.target.value)} />
 
                         <Button onClick={() => addNewWorker()} className='bg-[#062a76] hover:bg-[#264485]'>
@@ -124,7 +120,7 @@ export const Workers = () => {
                                     <TableHead>Nombre</TableHead>
                                     <TableHead>Apellido</TableHead>
                                     <TableHead>Email</TableHead>
-                                    <TableHead>Técnico</TableHead>
+                                    <TableHead>Cargo</TableHead>
                                     <TableHead>Cédula</TableHead>
                                     <TableHead>Estatus</TableHead>
                                     <TableHead>Editar</TableHead>

@@ -23,7 +23,7 @@ export const Login = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [loader, setLoader] = useState<boolean>(false);
-    const [messageError, showMessageError] = useState<string>('');
+    const [messageApi, showMessageApi] = useState<IBaseResponse>({message:'', success: true});
 
     const { register, handleSubmit, control } = useForm<ILogin>({
         defaultValues: {
@@ -32,7 +32,7 @@ export const Login = () => {
         },
         resolver: zodResolver(validateSchema)
     });
-    
+
     useEffect(() => {
         localStorage.removeItem('token')
     }, [])
@@ -44,13 +44,21 @@ export const Login = () => {
         await postDataApi('/auth', login).then((response: IAuthResponse | IBaseResponse) => {
             if (response.success && 'token' in response) {
                 localStorage.setItem('token', response.token);
+                showMessageApi(response)
                 setTimeout(() => {
                     navigate('/admin/reports');
-                }, 1500);
+                }, 1000);
             } else {
-                showMessageError(response.message)
+                showMessageApi(response)
             }
 
+            setLoader(false);
+        }).catch(err => {
+            const errorMessage: IBaseResponse = {
+                success: false,
+                message: err.message
+            }
+            showMessageApi(errorMessage)
             setLoader(false);
         })
     }
@@ -80,7 +88,7 @@ export const Login = () => {
                             {/* <span className="block text-right text-xs text-cyan-600 mt-2">¿Olvidaste tu contraseña?</span> */}
                         </div>
 
-                        {messageError && (<p className=' text-white text-center text-sm bg-red-500 rounded-md py-4 w-auto'>{messageError}</p>)}
+                        {messageApi.message !== '' && (<p className={` text-white text-center text-sm ${messageApi.success ? 'bg-green-500' : 'bg-red-500'} rounded-md py-4 w-auto`}>{messageApi.message}</p>)}
                         <button type="submit" disabled={!isValid} className="w-32 disabled:bg-gray-400 bg-[#062a76] hover:bg-[#172b56] text-white py-2 rounded-lg mx-auto block focus:outline-none  mt-4 mb-6">Acceso</button>
                     </form>
                     {/* <div className="text-center">

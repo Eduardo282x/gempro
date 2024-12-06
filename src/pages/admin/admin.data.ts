@@ -11,7 +11,7 @@ export const tabsOptions = [
     {
         label: 'Reportes',
         tab: 'reports',
-        roles: ['ADMIN', 'WORKER']
+        roles: ['ADMIN', 'WORKER', 'COMPANY']
     },
     {
         label: 'Trabajadores',

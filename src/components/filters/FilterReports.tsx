@@ -15,13 +15,22 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { useForm } from 'react-hook-form';
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { getDataApi } from "@/backend/basicAPI";
 import { Company, IUser } from "@/interfaces/user.interface";
 import { Button } from "../ui/button";
 
+interface IFilterReports {
+    resultForm: (form: ISubmitFilter) => void
+}
 
-export const FilterReports = () => {
+export interface ISubmitFilter {
+    company: string;
+    worker: string;
+    userCompanies: string;
+}
+
+export const FilterReports: FC<IFilterReports> = ({ resultForm }) => {
 
     const [companies, setCompanies] = useState<Company[]>([]);
     const [userCompanies, setUserCompanies] = useState<IUser[]>([]);
@@ -51,34 +60,43 @@ export const FilterReports = () => {
         getWorkersApi();
     }, [])
 
-    const form = useForm({
-        defaultValues: {
-            company: '',
-            worker: '',
-            userCompanies: '',
-        }
+    const defaultValues: ISubmitFilter = {
+        company: '',
+        worker: '',
+        userCompanies: '',
+    }
+    const form = useForm<ISubmitFilter>({
+        defaultValues,
+        mode: 'onChange'
     })
 
-    const onSubmit = (formSubmit: any) => {
-        console.log(formSubmit);
+    const onSubmit = (formSubmit: ISubmitFilter) => {
+        resultForm(formSubmit)
+    }
+
+    const resetFilter = () => {
+        form.reset(defaultValues);
+        resultForm(defaultValues);
     }
 
     return (
         <div className="w-full bg-white rounded-lg py-2 px-8 my-5">
 
             <Form {...form}>
-                <form className="flex items-center justify-between w-full " onSubmit={form.handleSubmit(onSubmit)}>
-                    <p>Ordenar por: </p>
-
+                <form className="flex items-center justify-between w-full text-sm" onSubmit={form.handleSubmit(onSubmit)}>
+                    {/* <p className="text-sm">Ordenar por: </p> */}
+{/* 
                     <FormField
                         control={form.control}
                         name="worker"
                         render={({ field }) => (
-                            <FormItem className="flex items-center justify-center gap-2">
+                            <FormItem className="flex items-center justify-center gap-2 text-sm">
                                 <FormLabel className="mt-2">Trabajadores:</FormLabel>
                                 <Select
                                     onValueChange={(value) => field.onChange(value)}
-                                    defaultValue={field.value}>
+                                    value={field.value || ''}
+                                    defaultValue={field.value}
+                                >
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Seleccionar trabajador" />
@@ -101,10 +119,11 @@ export const FilterReports = () => {
                         control={form.control}
                         name="userCompanies"
                         render={({ field }) => (
-                            <FormItem className="flex items-center justify-center gap-2">
+                            <FormItem className="flex items-center justify-center gap-2 ">
                                 <FormLabel className="mt-2 w-full">Empresa trabajador:</FormLabel>
                                 <Select
                                     onValueChange={(value) => field.onChange(value)}
+                                    value={field.value || ''} 
                                     defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
@@ -122,16 +141,17 @@ export const FilterReports = () => {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    /> */}
 
                     <FormField
                         control={form.control}
                         name="company"
                         render={({ field }) => (
-                            <FormItem className="flex items-center justify-center gap-2">
-                                <FormLabel className="mt-2">Empresa:</FormLabel>
+                            <FormItem className="flex items-center justify-center gap-2 ">
+                                <FormLabel className="mt-2 ">Buscar por Empresa:</FormLabel>
                                 <Select
                                     onValueChange={(value) => field.onChange(value)}
+                                    value={field.value || ''} 
                                     defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
@@ -151,7 +171,10 @@ export const FilterReports = () => {
                         )}
                     />
 
-                    <Button type="submit">Buscar</Button>
+                    <div className="flex gap-2 ">
+                        <Button type="button" className="bg-red-600 hover:bg-red-800" onClick={resetFilter}>Limpiar</Button>
+                        <Button type="submit" className="bg-[#01b033] hover:bg-[#0f9438]">Buscar</Button>
+                    </div>
                 </form>
             </Form>
         </div>

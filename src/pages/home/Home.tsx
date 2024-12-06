@@ -5,18 +5,33 @@ import { Services } from '../../components/services/Services'
 import { Contact } from '../../components/contact/Contact'
 import { Main } from '../../components/main/Main'
 import { Footer } from '../../components/footer/Footer'
+import ScrollAnimation from '@/components/scrollAnimation/ScrollAnimation'
 
 export const Home = () => {
     return (
         <div>
             <Header></Header>
-            <div id="inicio"><Main></Main></div>
-            <div id="nosotros"><Us></Us></div>
-            <div id="adiestramiento" className='p-8 bg-gray-200'>Adiestramiento</div>
-            <div id="eventos"><Events></Events></div>
-            <div id="servicios"><Services></Services></div>
-            <div id="contacto"><Contact></Contact></div>
-            <Footer></Footer>
+            <ScrollAnimation>
+                <div id="inicio"><Main></Main></div>
+            </ScrollAnimation>
+            <ScrollAnimation>
+                <div id="nosotros"><Us></Us></div>
+            </ScrollAnimation>
+            <ScrollAnimation>
+                <div id="adiestramiento" className='p-8 bg-gray-200'>Adiestramiento</div>
+            </ScrollAnimation>
+            <ScrollAnimation>
+                <div id="eventos"><Events></Events></div>
+            </ScrollAnimation>
+            <ScrollAnimation>
+                <div id="servicios"><Services></Services></div>
+            </ScrollAnimation>
+            <ScrollAnimation>
+                <div id="contacto"><Contact></Contact></div>
+            </ScrollAnimation>
+            <ScrollAnimation>
+                <Footer></Footer>
+            </ScrollAnimation>
         </div>
     )
 }

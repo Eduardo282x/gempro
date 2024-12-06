@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { Check, Pencil, PlusCircle, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { getDataApi, postDataApi, putDataApiNormal } from '@/backend/basicAPI';
-import { Company, IUser } from '@/interfaces/user.interface';
+import { IUser } from '@/interfaces/user.interface';
 import { useState, useEffect } from 'react';
-import { IBaseResponse, IOptions } from '@/interfaces/base.interface';
+import { IBaseResponse } from '@/interfaces/base.interface';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -14,13 +14,13 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { baseValues, companiesFormData, ICompaniesForm, ICompaniesType, validateSchemaCompanies } from './companies.data';
 import { Snackbar } from '@/components/snackbar/Snackbar';
-import AutocompleteCompanies from '@/components/autocompleteCompanies/AutocompleteCompanie';
+// import AutocompleteCompanies from '@/components/autocompleteCompanies/AutocompleteCompanie';
 import { Loader } from '@/components/loaders/Loader';
 
 export const Companies = () => {
 
     const [userCompanies, setUserCompanies] = useState<IUser[]>([]);
-    const [companies, setCompanies] = useState<IOptions[]>([]);
+    // const [companies, setCompanies] = useState<IOptions[]>([]);
     const [dataTable, setDataTable] = useState<IUser[]>([]);
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const [loader, setLoader] = useState<boolean>(false);
@@ -44,17 +44,17 @@ export const Companies = () => {
         })
     }
 
-    const getCompaniesApi = async () => {
-        await getDataApi('/users/company').then((response: Company[]) => {
-            const parseOptionsCompanies = response.map((company: Company) => {
-                return {
-                    label: company.name,
-                    value: company.id
-                }
-            })
-            setCompanies(parseOptionsCompanies);
-        })
-    }
+    // const getCompaniesApi = async () => {
+    //     await getDataApi('/users/company').then((response: Company[]) => {
+    //         const parseOptionsCompanies = response.map((company: Company) => {
+    //             return {
+    //                 label: company.name,
+    //                 value: company.id
+    //             }
+    //         })
+    //         setCompanies(parseOptionsCompanies);
+    //     })
+    // }
 
 
     const editUserCompany = (company: IUser) => {
@@ -76,16 +76,11 @@ export const Companies = () => {
         setShowDialog(true);
     }
 
-    const { register, handleSubmit, reset, setValue } = useForm<ICompaniesForm>({
+    const { register, handleSubmit, reset } = useForm<ICompaniesForm>({
         defaultValues: baseValues,
         resolver: zodResolver(validateSchemaCompanies),
         mode: 'onChange'
     })
-
-    const handleSelect = (data: { company: string; companyId?: number }) => {
-        if (data.company) setValue("company", data.company);
-        if (data.companyId) setValue("companyId", data.companyId);
-    };
 
     const onSubmit = (userCompaniesForm: ICompaniesForm) => {
         userCompaniesForm.specialty = '';
@@ -102,8 +97,8 @@ export const Companies = () => {
                 handleShowSnackbar();
             })
         } else {
-            postDataApi('/users/userCompanies', userCompaniesForm).then((response: IBaseResponse) => {
-                setResponseApi(response)
+            postDataApi('/users/userCompanies', userCompaniesForm).then((response) => {
+                setResponseApi(response as IBaseResponse)
                 getUserCompaniesApi()
                 setShowDialog(false);
                 handleShowSnackbar();
@@ -113,7 +108,7 @@ export const Companies = () => {
 
     useEffect(() => {
         getUserCompaniesApi()
-        getCompaniesApi()
+        // getCompaniesApi()
     }, [])
 
     const search = (value: string) => {
@@ -130,13 +125,8 @@ export const Companies = () => {
     return (
         <div>
             <Card>
-                <CardHeader>
-                    <CardTitle>Empresas</CardTitle>
-                </CardHeader>
-
                 <CardContent>
-
-                    <div className='flex items-center gap-5 justify-between w-full mb-5 '>
+                    <div className='flex items-center gap-5 justify-between w-full my-5 '>
                         <Input className='w-80' placeholder='Buscador...' onChange={(e) => search(e.target.value)} />
 
                         <Button onClick={() => addNewUserCompany()} className='bg-[#062a76] hover:bg-[#264485]'>
@@ -211,10 +201,11 @@ export const Companies = () => {
                             <Input {...register('company')} />
                         </div> */}
 
-                        <AutocompleteCompanies
+                        {/* <AutocompleteCompanies
                             companies={companies}
                             onSelect={handleSelect}
-                        />
+                            updateCompanies={getCompaniesApi}
+                        /> */}
 
                         {idUser !== 0 && (
                             <div className="flex items-center justify-between my-4 mx-2 space-y-2">

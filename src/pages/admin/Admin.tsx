@@ -6,7 +6,7 @@ import { Files } from "../files/Files";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { validateToken } from "@/helper/authentication";
-import { IToken } from "@/interfaces/user.interface";
+import { IFiles, IToken } from "@/interfaces/user.interface";
 import { tabsOptions } from "./admin.data";
 import { Button } from "@/components/ui/button"
 import { LogOut } from "lucide-react";
@@ -19,7 +19,8 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Reports } from "../reports/Reports";
-import { postDataFileApi } from "@/backend/basicAPI";
+import { getDataApi, postDataApi, postDataFileApi } from "@/backend/basicAPI";
+import { ISubmitFilter } from "@/components/filters/FilterReports";
 
 
 type TabValue = 'reports' | 'workers' | 'companies' | 'files'
@@ -30,6 +31,8 @@ export const Admin = () => {
     const [activeTab, setActiveTab] = useState<TabValue>('reports');
     const [userLogin, setUserLogin] = useState<IToken>({} as IToken);
     const [openDialog, setOpenDialog] = useState<boolean>(false);
+    const [reportsFiles, setReportsFiles] = useState<IFiles[]>([]);
+    const [loader, setLoader] = useState<boolean>(false);
 
     // Actualizar `activeTab` al cambiar la URL
     useEffect(() => {
@@ -44,8 +47,13 @@ export const Admin = () => {
         if (!getTokenDecode || getTokenDecode.expired) {
             navigate('/login')
         }
-        setUserLogin(getTokenDecode as IToken);
+
+        if(getTokenDecode !== null){
+            setUserLogin(getTokenDecode as IToken);
+            getReportFilesApi(getTokenDecode.id as number)
+        }
     }, [])
+
 
     const handleTabChange = (value: TabValue) => {
         navigate(`/admin/${value}`);
@@ -62,10 +70,28 @@ export const Admin = () => {
 
         postDataFileApi('/files', formData).then((response) => {
             console.log(response);
+            getReportFilesApi(userLogin.id)
         })
 
         console.log(formResult);
     }
+
+    const getReportFilesApi = async (userId: number) => {
+        setLoader(true);
+        await getDataApi(`/files/${userId}`).then((response: IFiles[]) => {
+            setReportsFiles(response);
+            setLoader(false);
+        })
+    }
+
+    const postReportFilesByFilterApi = async (reportsForm: ISubmitFilter) => {
+        setLoader(true);
+        await postDataApi(`/files/filters`, reportsForm).then((response) => {
+            setReportsFiles(response as IFiles[]);
+            setLoader(false);
+        })
+    }
+
     return (
         <div className="container mx-auto bg-gray-200 h-screen overflow-hidden">
             <div className="flex items-center justify-between w-full mb-5 bg-white p-4">
@@ -107,17 +133,17 @@ export const Admin = () => {
                         <TabsList>
                             {tabsOptions && tabsOptions.filter(tab => tab.roles.includes(userLogin.role)).map((tab, index: number) => (
                                 <TabsTrigger key={index} value={tab.tab} className="hover:bg-[#098033] hover:text-white">
-                                    {tab.label}     
+                                    {tab.label}
                                 </TabsTrigger>
                             ))}
                         </TabsList>
 
-                        <Button onClick={() => setOpenDialog(true)}>Agregar Reporte</Button>
+                        <Button className="bg-[#062a76] hover:bg-[#07379c]" onClick={() => setOpenDialog(true)}>Agregar Reporte</Button>
                     </div>
 
                     <TabsContent value="reports">
                         {/* <Reports></Reports> */}
-                        <Files></Files>
+                        <Files reportsFiles={reportsFiles} loader={loader} setFilter={postReportFilesByFilterApi}></Files>
                     </TabsContent>
 
                     <TabsContent value="workers">

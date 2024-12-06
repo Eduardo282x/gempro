@@ -28,7 +28,7 @@ export const getParamsDataApi = (endpoint: string, params: any) => {
     })
 }
 
-export const postDataApi = async (endpoint: string, data: any): Promise<IAuthResponse | IBaseResponse> => {
+export const postDataApi = async (endpoint: string, data: any): Promise<IAuthResponse | IBaseResponse | any> => {
     return await axiosInstance.post(endpoint, data).then((response) => {
         return response.data;
     }).catch((err) => {

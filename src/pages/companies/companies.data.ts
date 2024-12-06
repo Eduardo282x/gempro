@@ -7,7 +7,6 @@ export interface ICompaniesForm {
     identify: string;
     secondEmail: string;
     company: string;
-    companyId?: number | null;
     specialty?: string;
 }
 
@@ -19,8 +18,7 @@ export const baseValues: ICompaniesForm = {
     email: '',
     identify: '',
     secondEmail: '',
-    company: '',
-    companyId: 0
+    company: ''
 }
 
 export const validateSchemaCompanies = z.object({
@@ -28,7 +26,7 @@ export const validateSchemaCompanies = z.object({
     lastName: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
     email: z.string().email({message: 'Este campo es requerido'}),
     identify: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
-    company: z.string().refine(text => text !== '', {message: 'Este campo es requerido'})
+    company: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
 })
 
 export const companiesFormData = [
@@ -52,8 +50,8 @@ export const companiesFormData = [
         label: 'Cédula',
         formControl: 'identify'
     },
-    // {
-    //     label: 'Empresa',
-    //     formControl: 'company'
-    // }
+    {
+        label: 'Empresa',
+        formControl: 'company'
+    }
 ]
