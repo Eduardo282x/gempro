@@ -1,12 +1,16 @@
-import usImage from '../../assets/img/us.png'
-import us2Image from '../../assets/img/us2.jpg';
+// import usImage from '../../assets/img/us.png'
+// import us2Image from '../../assets/img/us2.jpg';
 import ImageGallery from '../clients/Clients';
+// import { ImageCarousel } from '../imagesCarousel/ImageCarousel';
 import ScrollAnimation from '../scrollAnimation/ScrollAnimation';
+import imageCarousel1 from '../../assets/img/carousel8.jpg';
+import imageCarousel2 from '../../assets/img/carousel7.jpg';
 
 export const Us = () => {
+    // const images = [imageCarousel1, imageCarousel2];
     return (
         <div className='p-8'>
-            <div className="flex flex-wrap items-center justify-between ">
+            <div className="flex flex-wrap items-center justify-between h-full ">
 
                 <div className='w-full lg:w-[48%] text-gray-700 text-justify'>
                     <ScrollAnimation>
@@ -35,11 +39,17 @@ export const Us = () => {
                     </ScrollAnimation>
                 </div>
 
-                <div className='w-full lg:w-[48%]  '>
+                <div className='w-full lg:w-[48%] h-full '>
                     <ScrollAnimation>
-                        <div className='flex flex-col items-center justify-center gap-5 h-[25rem]'>
-                            <img src={usImage} alt="" className='w-full h-1/2' />
-                            <img src={us2Image} alt="" className='w-full h-1/2' />
+                        <div className='flex items-center justify-center gap-5 h-[40%] mt-5 md:mt-0'>
+                            <div className=' rounded-xl overflow-hidden w-1/2 md:h-[35rem]'>
+                                <img src={imageCarousel1} alt="" className='' />
+                            </div>
+
+                            <div className=' rounded-xl overflow-hidden w-1/2 md:h-[35rem]'>
+                                <img src={imageCarousel2} alt="" className='' />
+                            </div>
+                            {/* <ImageCarousel images={images} width="25rem" height="38rem" /> */}
                         </div>
                     </ScrollAnimation>
                 </div>

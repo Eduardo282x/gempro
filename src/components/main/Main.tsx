@@ -1,8 +1,8 @@
 import Carousel from "react-multi-carousel";
-import carousel1 from '../../assets/img/carousel1.jpg';
+import carousel1 from '../../assets/img/carousel10.jpg';
 import carousel2 from '../../assets/img/carousel2.jpg';
-import carousel3 from '../../assets/img/carousel3.jpg';
-import carousel4 from '../../assets/img/carousel4.jpg';
+import carousel3 from '../../assets/img/carousel11.jpg';
+import carousel4 from '../../assets/img/carousel12.jpg';
 
 export const responsive = {
     superLargeDesktop: {
