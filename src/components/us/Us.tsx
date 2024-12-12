@@ -1,13 +1,40 @@
 // import usImage from '../../assets/img/us.png'
 // import us2Image from '../../assets/img/us2.jpg';
 import ImageGallery from '../clients/Clients';
-// import { ImageCarousel } from '../imagesCarousel/ImageCarousel';
+
 import ScrollAnimation from '../scrollAnimation/ScrollAnimation';
 import imageCarousel1 from '../../assets/img/carousel8.jpg';
 import imageCarousel2 from '../../assets/img/carousel7.jpg';
+import video from '../../assets/video/video.mp4';
+
+import image1 from '../../assets/img/clients/image1.jpg'
+import image2 from '../../assets/img/clients/image2.jpg';
+import image3 from '../../assets/img/clients/image3.jpg';
+import image4 from '../../assets/img/clients/image4.jpg';
+import image5 from '../../assets/img/clients/image5.jpg';
+import image6 from '../../assets/img/clients/image6.jpg';
+import image7 from '../../assets/img/clients/image7.jpg';
+import image8 from '../../assets/img/clients/image8.jpg';
+import image9 from '../../assets/img/clients/image9.jpg';
+import image10 from '../../assets/img/clients/image10.jpg';
+import image11 from '../../assets/img/clients/image11.jpg';
+
+export const images = [
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    image6,
+    image7,
+    image8,
+    image9,
+    image10,
+    image11
+];
+
 
 export const Us = () => {
-    // const images = [imageCarousel1, imageCarousel2];
     return (
         <div className='p-8'>
             <div className="flex flex-wrap items-center justify-between h-full ">
@@ -49,14 +76,17 @@ export const Us = () => {
                             <div className=' rounded-xl overflow-hidden w-1/2 md:h-[35rem]'>
                                 <img src={imageCarousel2} alt="" className='' />
                             </div>
-                            {/* <ImageCarousel images={images} width="25rem" height="38rem" /> */}
                         </div>
                     </ScrollAnimation>
                 </div>
             </div>
 
+            <div className="w-full flex items-center justify-center my-5">
+                <video src={video} autoPlay playsInline loop muted className='w-[40rem] rounded-xl'></video>
+            </div>
+
             <h2 className='text-[#062a76] text-3xl font-bold my-4 text-center mt-10'>Clientes</h2>
-            <ImageGallery></ImageGallery>
+            <ImageGallery images={images}></ImageGallery>
         </div>
     )
 }

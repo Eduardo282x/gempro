@@ -19,6 +19,7 @@ export const Workers = () => {
 
     const [workers, setWorkers] = useState<IUser[]>([]);
     const [dataTable, setDataTable] = useState<IUser[]>([]);
+    const [filter, setFilter] = useState<string>('');
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const [loader, setLoader] = useState<boolean>(false);
     const [changeStatus, setChangeStatus] = useState<boolean>(false);
@@ -65,7 +66,11 @@ export const Workers = () => {
         setLoader(true)
         await getDataApi('/users/workers').then((response: IUser[]) => {
             setWorkers(response);
-            setDataTable(response);
+            if(filter !== ''){
+                search(filter);
+            } else {
+                setDataTable(response);
+            }
             setLoader(false)
         })
     }
@@ -90,6 +95,7 @@ export const Workers = () => {
     }, [])
 
     const search = (value: string) => {
+        setFilter(value);
         const dataFiltered = workers.filter(worker =>
             worker.firstName.toLowerCase().includes(value.toLowerCase()) ||
             worker.lastName.toLowerCase().includes(value.toLowerCase()) ||

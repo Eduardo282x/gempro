@@ -70,6 +70,7 @@ export const Reports: FC<IFormReportProps> = ({ open, onClose, onSubmit }) => {
     const onSubmitForm = (formSubmit: IFormReport) => {
         onSubmit(formSubmit);
         onClose(false);
+        form.reset();
     }
 
     return (

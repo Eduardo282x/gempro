@@ -14,7 +14,6 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { baseValues, companiesFormData, ICompaniesForm, ICompaniesType, validateSchemaCompanies } from './companies.data';
 import { Snackbar } from '@/components/snackbar/Snackbar';
-// import AutocompleteCompanies from '@/components/autocompleteCompanies/AutocompleteCompanie';
 import { Loader } from '@/components/loaders/Loader';
 
 export const Companies = () => {
@@ -23,6 +22,7 @@ export const Companies = () => {
     // const [companies, setCompanies] = useState<IOptions[]>([]);
     const [dataTable, setDataTable] = useState<IUser[]>([]);
     const [showDialog, setShowDialog] = useState<boolean>(false);
+    const [filter, setFilter] = useState<string>('');
     const [loader, setLoader] = useState<boolean>(false);
     const [titleDialog, setTitleDialog] = useState<string>('Agregar');
     const [responseApi, setResponseApi] = useState<IBaseResponse>({} as IBaseResponse);
@@ -39,7 +39,11 @@ export const Companies = () => {
         setLoader(true);
         await getDataApi('/users/userCompanies').then((response: IUser[]) => {
             setUserCompanies(response);
-            setDataTable(response);
+            if(filter !== ''){
+                search(filter);
+            } else {
+                setDataTable(response);
+            }
             setLoader(false)
         })
     }
@@ -76,7 +80,7 @@ export const Companies = () => {
         setShowDialog(true);
     }
 
-    const { register, handleSubmit, reset } = useForm<ICompaniesForm>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<ICompaniesForm>({
         defaultValues: baseValues,
         resolver: zodResolver(validateSchemaCompanies),
         mode: 'onChange'
@@ -112,6 +116,7 @@ export const Companies = () => {
     }, [])
 
     const search = (value: string) => {
+        setFilter(value);
         const dataFiltered = userCompanies.filter(worker =>
             worker.firstName.toLowerCase().includes(value.toLowerCase()) ||
             worker.lastName.toLowerCase().includes(value.toLowerCase()) ||
@@ -193,6 +198,7 @@ export const Companies = () => {
                             <div key={index} className="space-y-2 my-4">
                                 <Label htmlFor={formData.formControl}>{formData.label}</Label>
                                 <Input {...register(formData.formControl as ICompaniesType)} />
+                                {errors[formData.formControl as ICompaniesType]?.message && <span className='text-red-500 text-sm ml-2'>{errors[formData.formControl as ICompaniesType]?.message?.toString()}</span>}
                             </div>
                         ))}
 

@@ -21,6 +21,8 @@ import {
 import { Reports } from "../reports/Reports";
 import { getDataApi, postDataApi, postDataFileApi } from "@/backend/basicAPI";
 import { ISubmitFilter } from "@/components/filters/FilterReports";
+import { Snackbar } from "@/components/snackbar/Snackbar";
+import { IBaseResponse } from "@/interfaces/base.interface";
 
 
 type TabValue = 'reports' | 'workers' | 'companies' | 'files'
@@ -33,6 +35,8 @@ export const Admin = () => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
     const [reportsFiles, setReportsFiles] = useState<IFiles[]>([]);
     const [loader, setLoader] = useState<boolean>(false);
+    const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+    const [responseApi, setResponseApi] = useState<IBaseResponse>({} as IBaseResponse);
 
     // Actualizar `activeTab` al cambiar la URL
     useEffect(() => {
@@ -42,13 +46,18 @@ export const Admin = () => {
         }
     }, [location]);
 
+    const handleShowSnackbar = () => {
+        setShowSnackbar(true);
+        setTimeout(() => setShowSnackbar(false), 3000); // Oculta después de 3 segundos
+    };
+
     useEffect(() => {
         const getTokenDecode = validateToken();
         if (!getTokenDecode || getTokenDecode.expired) {
             navigate('/login')
         }
 
-        if(getTokenDecode !== null){
+        if (getTokenDecode !== null) {
             setUserLogin(getTokenDecode as IToken);
             getReportFilesApi(getTokenDecode.id as number)
         }
@@ -69,11 +78,11 @@ export const Admin = () => {
         }
 
         postDataFileApi('/files', formData).then((response) => {
-            console.log(response);
+            setResponseApi(response);
+            handleShowSnackbar();
             getReportFilesApi(userLogin.id)
         })
 
-        console.log(formResult);
     }
 
     const getReportFilesApi = async (userId: number) => {
@@ -144,6 +153,8 @@ export const Admin = () => {
                     <TabsContent value="reports">
                         {/* <Reports></Reports> */}
                         <Files reportsFiles={reportsFiles} loader={loader} setFilter={postReportFilesByFilterApi}></Files>
+
+                        {showSnackbar && responseApi && <Snackbar baseResponse={responseApi} />}
                     </TabsContent>
 
                     <TabsContent value="workers">

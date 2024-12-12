@@ -9,6 +9,8 @@ import { formatDate } from '@/helper/parsers'
 import { IFiles, IToken } from '@/interfaces/user.interface'
 import { Eye, Download } from 'lucide-react'
 import { FC, useEffect, useState } from 'react';
+import imgGempro from '../../assets/img/gemproLogo3.jpg';
+import { useNavigate } from 'react-router-dom'
 
 export interface IFilesCards {
     reportsFiles: IFiles[],
@@ -17,6 +19,7 @@ export interface IFilesCards {
 }
 
 export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
+    const navigate = useNavigate();
     const [selectedReport, setSelectedReport] = useState<IFiles | null>(null);
     const [userLogin, setUserLogin] = useState<IToken>({} as IToken);
     const [filePreview, setFilePreview] = useState<string>(''); // Estado para almacenar el blob del archivo.
@@ -70,6 +73,11 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
         setFilter(reportsForm)
     }
 
+    const goToPage = () => {
+        localStorage.removeItem('token');
+        navigate('/')
+    }
+
     return (
         <div>
             {userLogin.role === 'ADMIN' && (
@@ -93,9 +101,15 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
                     <DialogHeader>
                         <DialogTitle>{selectedReport?.name}</DialogTitle>
                         <DialogDescription>
-                            Empresa: {selectedReport?.directedTo.company.name}
-                            <br />
-                            Fecha: {formatDate(selectedReport?.uploadedAt.toString() as string)}
+                            <div className="flex items-center justify-between w-full">
+                                <div>
+                                    Empresa: {selectedReport?.directedTo.company.name}
+                                    <br />
+                                    Fecha: {formatDate(selectedReport?.uploadedAt.toString() as string)}
+                                </div>
+
+                                <img src={imgGempro} alt="" className='w-20' />
+                            </div>
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex justify-center">
@@ -121,6 +135,11 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
                         ) : (
                             <p>No se pudo cargar el archivo.</p>
                         )}
+                    </div>
+
+                    <div className='w-full flex items-center justify-between my-5 gap-2'>
+                        <span className=' text-sm w-1/2 text-wrap'>Sabaneta, Urbanización Urdaneta, Av Principal, Calle 9, edificio Gempro 105A</span>
+                        <span className=' text-sm w-1/2 text-wrap text-right'>Visita nuestra <span onClick={goToPage} className='text-blue-500 hover:underline cursor-pointer'>pagina aqui</span></span>
                     </div>
                     <div className="flex justify-end space-x-2">
                         <Button variant="outline" onClick={() => window.open(filePreview, "_blank")}>

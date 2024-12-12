@@ -24,7 +24,7 @@ export const baseValues: ICompaniesForm = {
 export const validateSchemaCompanies = z.object({
     firstName: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
     lastName: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
-    email: z.string().email({message: 'Este campo es requerido'}),
+    email: z.string().email({message: 'Debe ingresar un correo valido'}),
     identify: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
     company: z.string().refine(text => text !== '', {message: 'Este campo es requerido'}),
 })

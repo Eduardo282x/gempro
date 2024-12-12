@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 export const MainTitlePage = () => {
     const [scale, setScale] = useState(1);
     const [opacity, setOpacity] = useState(1);
+    const [bgClass] = useState("h1-bg1");
 
     useEffect(() => {
         const handleScroll = () => {
@@ -24,7 +25,7 @@ export const MainTitlePage = () => {
     return (
         <div className="w-full text-center py-20">
             <h1
-                className="text-[4rem] md:text-[12rem]"
+                className={`text-[4rem] md:text-[12rem] ${bgClass}`}
                 style={{
                     transform: `scale(${scale})`,
                     opacity: opacity,

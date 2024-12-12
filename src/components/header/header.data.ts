@@ -15,11 +15,11 @@ export const mainMenu: IMenu[] = [
         icon: 'group',
         scrollTo:'nosotros'
     },
-    {
-        title: 'Adiestramiento',
-        icon: 'psychology_alt',
-        scrollTo: 'adiestramiento'
-    },
+    // {
+    //     title: 'Adiestramiento',
+    //     icon: 'psychology_alt',
+    //     scrollTo: 'adiestramiento'
+    // },
     {
         title: 'Eventos',
         icon: 'event',

@@ -3,7 +3,7 @@ import { Us } from '../../components/us/Us'
 import { Events } from '../../components/events/Events'
 import { Services } from '../../components/services/Services'
 import { Contact } from '../../components/contact/Contact'
-import { Main } from '../../components/main/Main'
+// import { Main } from '../../components/main/Main'
 import { Footer } from '../../components/footer/Footer'
 import ScrollAnimation from '@/components/scrollAnimation/ScrollAnimation'
 import { MainTitlePage } from '@/components/mainTitlePage/MainTitlePage'
@@ -38,17 +38,17 @@ export const Home = () => {
         <div className='w-full overflow-hidden'>
             <Header></Header>
             <ScrollAnimation>
-                <div><MainTitlePage></MainTitlePage></div>
+                <div id="inicio"><MainTitlePage></MainTitlePage></div>
             </ScrollAnimation>
-            <ScrollAnimation>
+            {/* <ScrollAnimation>
                 <div id="inicio"><Main></Main></div>
-            </ScrollAnimation>
+            </ScrollAnimation> */}
             <ScrollAnimation>
                 <div id="nosotros"><Us></Us></div>
             </ScrollAnimation>
-            <ScrollAnimation>
+            {/* <ScrollAnimation>
                 <div id="adiestramiento" className='p-8 bg-gray-200'>Adiestramiento</div>
-            </ScrollAnimation>
+            </ScrollAnimation> */}
             <ScrollAnimation>
                 <div id="eventos"><Events></Events></div>
             </ScrollAnimation>

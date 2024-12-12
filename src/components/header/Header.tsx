@@ -5,17 +5,6 @@ import { Button } from '../ui/button';
 import { Menu } from 'lucide-react';
 import { useState } from 'react';
 
-// import {
-//     Drawer,
-//     DrawerClose,
-//     DrawerContent,
-//     DrawerDescription,
-//     DrawerFooter,
-//     DrawerHeader,
-//     DrawerTitle,
-//     DrawerTrigger,
-// } from "@/components/ui/drawer"
-
 export const Header = () => {
     const navigate = useNavigate();
     const [openMenu, setOpenMenu] = useState<boolean>(false);
