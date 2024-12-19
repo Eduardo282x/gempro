@@ -18,6 +18,7 @@ function App() {
           <Route path="/admin/workers" element={<Admin />} />
           <Route path="/admin/companies" element={<Admin />} />
           <Route path="/admin/files" element={<Admin />} />
+          <Route path="/admin/profile" element={<Admin />} />
 
           {/* <Route element={<Layout></Layout>}>
             <Route path="/home" element={<Home />} />

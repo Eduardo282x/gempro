@@ -2,7 +2,7 @@ import { Loader } from './Loader'
 
 export const ScreenLoader = () => {
     return (
-        <div className=' bg-gray-800 opacity-80 absolute top-0 left-0 z-50 w-screen h-screen overflow-hidden flex items-center justify-center'>
+        <div className=' bg-gray-800 opacity-80 absolute top-0 left-0 z-[1000] w-screen h-screen overflow-hidden flex items-center justify-center'>
             <Loader></Loader>
         </div>
     )

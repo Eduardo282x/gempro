@@ -87,9 +87,9 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
             )}
 
             <div className="flex flex-col items-center justify-start w-full h-80 overflow-auto">
-                {reportsFiles && reportsFiles.map((report: IFiles) => (
+                {reportsFiles && reportsFiles.length > 0 ?  reportsFiles.map((report: IFiles) => (
                     <CardFiles key={report.id} file={report} openReportDialog={openReportDialog}></CardFiles>
-                ))}
+                )) : <p>No se encuentran reportes...</p>}
 
                 {loader && (
                     <Loader></Loader>

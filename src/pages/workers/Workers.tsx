@@ -15,6 +15,7 @@ import { IBaseResponse } from '@/interfaces/base.interface';
 import { Switch } from '@/components/ui/switch';
 import { Snackbar } from '@/components/snackbar/Snackbar';
 import { Loader } from '@/components/loaders/Loader';
+import { ScreenLoader } from '@/components/loaders/ScreenLoader';
 export const Workers = () => {
 
     const [workers, setWorkers] = useState<IUser[]>([]);
@@ -22,6 +23,7 @@ export const Workers = () => {
     const [filter, setFilter] = useState<string>('');
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const [loader, setLoader] = useState<boolean>(false);
+    const [loaderApi, setLoaderApi] = useState<boolean>(false);
     const [changeStatus, setChangeStatus] = useState<boolean>(false);
     const [titleDialog, setTitleDialog] = useState<string>('Agregar');
     const [idUser, setIdUser] = useState<number>(0);
@@ -40,6 +42,7 @@ export const Workers = () => {
     })
 
     const onSubmit = (workerForm: IWorkerForm) => {
+        setLoaderApi(true);
         if (idUser !== 0) {
             const bodyUpdateWorker = {
                 ...workerForm,
@@ -51,6 +54,7 @@ export const Workers = () => {
                 getWorkersApi()
                 setShowDialog(false);
                 handleShowSnackbar();
+                setLoaderApi(false);
             })
         } else {
             postDataApi('/users/workers', workerForm).then((response) => {
@@ -58,6 +62,7 @@ export const Workers = () => {
                 getWorkersApi()
                 setShowDialog(false);
                 handleShowSnackbar();
+                setLoaderApi(false);
             })
         }
     }
@@ -66,7 +71,7 @@ export const Workers = () => {
         setLoader(true)
         await getDataApi('/users/workers').then((response: IUser[]) => {
             setWorkers(response);
-            if(filter !== ''){
+            if (filter !== '') {
                 search(filter);
             } else {
                 setDataTable(response);
@@ -108,6 +113,7 @@ export const Workers = () => {
     return (
         <div>
 
+            {loaderApi && <ScreenLoader></ScreenLoader>}
             <Card>
                 <CardContent className=''>
                     <div className='flex flex-wrap items-center gap-5 justify-between w-full my-5 '>

@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label';
 import { baseValues, companiesFormData, ICompaniesForm, ICompaniesType, validateSchemaCompanies } from './companies.data';
 import { Snackbar } from '@/components/snackbar/Snackbar';
 import { Loader } from '@/components/loaders/Loader';
+import { ScreenLoader } from '@/components/loaders/ScreenLoader';
 
 export const Companies = () => {
 
@@ -24,6 +25,7 @@ export const Companies = () => {
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const [filter, setFilter] = useState<string>('');
     const [loader, setLoader] = useState<boolean>(false);
+    const [loaderApi, setLoaderApi] = useState<boolean>(false);
     const [titleDialog, setTitleDialog] = useState<string>('Agregar');
     const [responseApi, setResponseApi] = useState<IBaseResponse>({} as IBaseResponse);
     const [changeStatus, setChangeStatus] = useState<boolean>(false);
@@ -39,7 +41,7 @@ export const Companies = () => {
         setLoader(true);
         await getDataApi('/users/userCompanies').then((response: IUser[]) => {
             setUserCompanies(response);
-            if(filter !== ''){
+            if (filter !== '') {
                 search(filter);
             } else {
                 setDataTable(response);
@@ -87,6 +89,7 @@ export const Companies = () => {
     })
 
     const onSubmit = (userCompaniesForm: ICompaniesForm) => {
+        setLoaderApi(true);
         userCompaniesForm.specialty = '';
         if (idUser !== 0) {
             const bodyUpdateWorker = {
@@ -99,6 +102,7 @@ export const Companies = () => {
                 getUserCompaniesApi()
                 setShowDialog(false);
                 handleShowSnackbar();
+                setLoaderApi(false);
             })
         } else {
             postDataApi('/users/userCompanies', userCompaniesForm).then((response) => {
@@ -106,6 +110,7 @@ export const Companies = () => {
                 getUserCompaniesApi()
                 setShowDialog(false);
                 handleShowSnackbar();
+                setLoaderApi(false);
             })
         }
     }
@@ -129,6 +134,7 @@ export const Companies = () => {
 
     return (
         <div>
+            {loaderApi && <ScreenLoader></ScreenLoader>}
             <Card>
                 <CardContent>
                     <div className='flex flex-wrap items-center gap-5 justify-between w-full my-5 '>

@@ -9,7 +9,7 @@ import { validateToken } from "@/helper/authentication";
 import { IFiles, IToken } from "@/interfaces/user.interface";
 import { tabsOptions } from "./admin.data";
 import { Button } from "@/components/ui/button"
-import { LogOut } from "lucide-react";
+import { CircleUser, LogOut } from "lucide-react";
 import imgGempro from '../../assets/img/gemproLogo3.jpg'
 
 import {
@@ -23,9 +23,10 @@ import { getDataApi, postDataApi, postDataFileApi } from "@/backend/basicAPI";
 import { ISubmitFilter } from "@/components/filters/FilterReports";
 import { Snackbar } from "@/components/snackbar/Snackbar";
 import { IBaseResponse } from "@/interfaces/base.interface";
+import { Profile } from "../profile/Profile";
 
 
-type TabValue = 'reports' | 'workers' | 'companies' | 'files'
+type TabValue = 'reports' | 'workers' | 'companies' | 'files' | 'profile'
 
 export const Admin = () => {
     const navigate = useNavigate();
@@ -41,7 +42,7 @@ export const Admin = () => {
     // Actualizar `activeTab` al cambiar la URL
     useEffect(() => {
         const pathSegment = location.pathname.split('/')[2]; // Obtiene la parte después de `/admin/`
-        if (pathSegment && ['reports', 'workers', 'companies', 'files'].includes(pathSegment)) {
+        if (pathSegment && ['reports', 'workers', 'companies', 'files', 'profile'].includes(pathSegment)) {
             setActiveTab(pathSegment as TabValue);
         }
     }, [location]);
@@ -113,20 +114,26 @@ export const Admin = () => {
                     </div>
                 </div>
 
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="outline" className="hover:bg-[#098033] hover:text-white" onClick={() => navigate('/login')}>
-                                <span className="hidden md:block">Cerrar sesión</span>
-                                <LogOut />
-                            </Button>
-                        </TooltipTrigger>
-                        {/* <TooltipContent className="bg-white text-gray-500 rounded-lg border-2 border-solid border-black"> */}
-                        <TooltipContent>
-                            <p>Cerrar sesión</p>
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
+                <div className="flex items-center justify-center gap-5">
+                    <div className="flex gap-2 cursor-pointer rounded-md hover:bg-gray-300 px-4 py-2" onClick={() => navigate('/admin/profile')}>
+                        <p>Bienvenido {userLogin.firstName} {userLogin.lastName}</p>
+                        <CircleUser />
+                    </div>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button variant="outline" className="hover:bg-[#098033] hover:text-white" onClick={() => navigate('/login')}>
+                                    <span className="hidden md:block">Cerrar sesión</span>
+                                    <LogOut />
+                                </Button>
+                            </TooltipTrigger>
+                            {/* <TooltipContent className="bg-white text-gray-500 rounded-lg border-2 border-solid border-black"> */}
+                            <TooltipContent>
+                                <p>Cerrar sesión</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
             </div>
 
             <div className="px-8 py-2">
@@ -163,6 +170,10 @@ export const Admin = () => {
 
                     <TabsContent value="companies">
                         <Companies></Companies>
+                    </TabsContent>
+
+                    <TabsContent value="profile">
+                        <Profile></Profile>
                     </TabsContent>
 
 
