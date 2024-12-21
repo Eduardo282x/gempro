@@ -19,7 +19,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Reports } from "../reports/Reports";
-import { getDataApi, postDataApi, postDataFileApi } from "@/backend/basicAPI";
+import { deleteDataApi, getDataApi, postDataApi, postDataFileApi } from "@/backend/basicAPI";
 import { ISubmitFilter } from "@/components/filters/FilterReports";
 import { Snackbar } from "@/components/snackbar/Snackbar";
 import { IBaseResponse } from "@/interfaces/base.interface";
@@ -64,7 +64,6 @@ export const Admin = () => {
         }
     }, [])
 
-
     const handleTabChange = (value: TabValue) => {
         navigate(`/admin/${value}`);
     };
@@ -99,6 +98,16 @@ export const Admin = () => {
         await postDataApi(`/files/filters`, reportsForm).then((response) => {
             setReportsFiles(response as IFiles[]);
             setLoader(false);
+        })
+    }
+
+    const deleteReportFileApi = async (idReport: number) => {
+        setLoader(true);
+        await deleteDataApi(`/files`, idReport).then((response) => {
+            setResponseApi(response);
+            handleShowSnackbar();
+            setLoader(false);
+            getReportFilesApi(userLogin.id)
         })
     }
 
@@ -159,7 +168,7 @@ export const Admin = () => {
 
                     <TabsContent value="reports">
                         {/* <Reports></Reports> */}
-                        <Files reportsFiles={reportsFiles} loader={loader} setFilter={postReportFilesByFilterApi}></Files>
+                        <Files reportsFiles={reportsFiles} loader={loader} setFilter={postReportFilesByFilterApi} deleteReport={deleteReportFileApi}></Files>
 
                         {showSnackbar && responseApi && <Snackbar baseResponse={responseApi} />}
                     </TabsContent>

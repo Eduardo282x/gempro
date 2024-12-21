@@ -62,7 +62,7 @@ export const Contact = () => {
 
                     <div className="flex items-center font-semibold cursor-pointer">
                         <span className="material-icons-outlined text-[#098033] mr-2">location_on</span>
-                        <span className='text-gray-700'>Venezuela, Edo Zulia - Maracaibo, Sabaneta, Ubr. Urdaneta, Av Principal, Calle 9, edificio Gempro 105A</span>
+                        <span className='text-gray-700'>Venezuela, Edo Zulia - Maracaibo, Sabaneta, Urb. Urdaneta, Av Principal, Calle 9, edificio Gempro 105A</span>
                     </div>
                 </div>
 

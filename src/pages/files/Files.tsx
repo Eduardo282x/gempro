@@ -1,5 +1,5 @@
 import { getDataFileApi } from '@/backend/basicAPI'
-import { CardFiles } from '@/components/cardFiles/CardFiles'
+import { ActionDialog, CardFiles } from '@/components/cardFiles/CardFiles'
 import { FilterReports, ISubmitFilter } from '@/components/filters/FilterReports'
 import { Loader } from '@/components/loaders/Loader'
 import { Button } from '@/components/ui/button'
@@ -15,15 +15,20 @@ import { useNavigate } from 'react-router-dom'
 export interface IFilesCards {
     reportsFiles: IFiles[],
     setFilter: (reportsForm: ISubmitFilter) => void,
-    loader: boolean
+    loader: boolean;
+    deleteReport: (idReport: number) => void;
 }
 
-export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
+type TypeActionBtn = 'cancel' | 'delete';
+
+export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter, deleteReport }) => {
     const navigate = useNavigate();
     const [selectedReport, setSelectedReport] = useState<IFiles | null>(null);
     const [userLogin, setUserLogin] = useState<IToken>({} as IToken);
     const [filePreview, setFilePreview] = useState<string>(''); // Estado para almacenar el blob del archivo.
     const [loadingPreview, setLoadingPreview] = useState<boolean>(false);
+    const [openDialogDelete, setOpenDialogDelete] = useState<boolean>(false);
+    const [openDialogReport, setOpenDialogReport] = useState<boolean>(false);
 
     useEffect(() => {
         const getTokenDecode = validateToken();
@@ -32,19 +37,26 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
         }
     }, []);
 
-    const openReportDialog = async (report: IFiles) => {
+    const openReportDialog = async (report: IFiles, action: ActionDialog) => {
         setSelectedReport(report);
-        setLoadingPreview(true);
 
-        try {
-            const response = await getDataFileApi(`/files/download/${report.id}`);
-            const blob = new Blob([response], { type: determineFileType(report.url) });
-            const fileUrl = window.URL.createObjectURL(blob);
-            setFilePreview(fileUrl);
-        } catch (error) {
-            console.error("Error al obtener el archivo:", error);
-        } finally {
-            setLoadingPreview(false);
+        if (action === 'see') {
+            setOpenDialogReport(true);
+            setLoadingPreview(true);
+            try {
+                const response = await getDataFileApi(`/files/download/${report.id}`);
+                const blob = new Blob([response], { type: determineFileType(report.url) });
+                const fileUrl = window.URL.createObjectURL(blob);
+                setFilePreview(fileUrl);
+            } catch (error) {
+                console.error("Error al obtener el archivo:", error);
+            } finally {
+                setLoadingPreview(false);
+            }
+        } 
+
+        if(action === 'delete'){
+            setOpenDialogDelete(true);
         }
     }
 
@@ -78,6 +90,14 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
         navigate('/')
     }
 
+    const actionBtn = (action: TypeActionBtn) => {
+        if(action === 'delete' && selectedReport){
+            deleteReport(selectedReport.id);
+        }
+
+        setOpenDialogDelete(false);
+    }
+
     return (
         <div>
             {userLogin.role === 'ADMIN' && (
@@ -87,8 +107,8 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
             )}
 
             <div className="flex flex-col items-center justify-start w-full h-80 overflow-auto">
-                {reportsFiles && reportsFiles.length > 0 ?  reportsFiles.map((report: IFiles) => (
-                    <CardFiles key={report.id} file={report} openReportDialog={openReportDialog}></CardFiles>
+                {reportsFiles && reportsFiles.length > 0 ? reportsFiles.map((report: IFiles) => (
+                    <CardFiles key={report.id} file={report} openReportDialog={openReportDialog} ></CardFiles>
                 )) : <p>No se encuentran reportes...</p>}
 
                 {loader && (
@@ -96,7 +116,7 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
                 )}
             </div>
 
-            <Dialog open={selectedReport !== null} onOpenChange={() => setSelectedReport(null)}>
+            <Dialog open={openDialogReport} onOpenChange={setOpenDialogReport}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>{selectedReport?.name}</DialogTitle>
@@ -151,6 +171,20 @@ export const Files: FC<IFilesCards> = ({ reportsFiles, loader, setFilter }) => {
                             Descargar
                         </Button>
                     </div>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={openDialogDelete} onOpenChange={setOpenDialogDelete}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>¿Estas seguro de que quieres eliminar este reporte?</DialogTitle>
+                        <DialogDescription>
+                            <div className="flex items-center justify-center gap-2 w-full my-5">
+                                <Button onClick={() => actionBtn('cancel')}>Cancelar</Button>
+                                <Button onClick={() => actionBtn('delete')} variant={'destructive'}>Eliminar</Button>
+                            </div>
+                        </DialogDescription>
+                    </DialogHeader>
                 </DialogContent>
             </Dialog>
         </div>

@@ -16,6 +16,7 @@ import { baseValues, companiesFormData, ICompaniesForm, ICompaniesType, validate
 import { Snackbar } from '@/components/snackbar/Snackbar';
 import { Loader } from '@/components/loaders/Loader';
 import { ScreenLoader } from '@/components/loaders/ScreenLoader';
+import { Paginator } from '@/components/paginator/Paginator';
 
 export const Companies = () => {
 
@@ -31,6 +32,14 @@ export const Companies = () => {
     const [changeStatus, setChangeStatus] = useState<boolean>(false);
     const [idUser, setIdUser] = useState<number>(0);
     const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleChangePage = (page: number, newPage: number) => {
+        setPage(page);
+        setRowsPerPage(newPage);
+    };
+
 
     const handleShowSnackbar = () => {
         setShowSnackbar(true);
@@ -127,10 +136,10 @@ export const Companies = () => {
             worker.lastName.toLowerCase().includes(value.toLowerCase()) ||
             worker.identify.toLowerCase().includes(value.toLowerCase())
         )
+        setPage(0);
+        setRowsPerPage(10);
         setDataTable(dataFiltered)
     }
-
-
 
     return (
         <div>
@@ -160,21 +169,23 @@ export const Companies = () => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {dataTable && dataTable.length > 0 ? dataTable.map((company) => (
-                                    <TableRow key={company.id}>
-                                        <TableCell>{company.company.name}</TableCell>
-                                        <TableCell>{company.firstName} {company.lastName}</TableCell>
-                                        <TableCell>{company.email}</TableCell>
-                                        <TableCell>{company.secondEmail ? company.secondEmail : '-'}</TableCell>
-                                        <TableCell>{company.identify}</TableCell>
-                                        <TableCell>{company.status ? <Check color='#26cc05' /> : <X color="#ff0000" />}</TableCell>
-                                        <TableCell>
-                                            <Button variant="ghost" size="icon" onClick={() => editUserCompany(company)}>
-                                                <Pencil className="h-4 w-4" />
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                )) :
+                                {dataTable && dataTable.length > 0 ? dataTable
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((company) => (
+                                        <TableRow key={company.id}>
+                                            <TableCell>{company.company.name}</TableCell>
+                                            <TableCell>{company.firstName} {company.lastName}</TableCell>
+                                            <TableCell>{company.email}</TableCell>
+                                            <TableCell>{company.secondEmail ? company.secondEmail : '-'}</TableCell>
+                                            <TableCell>{company.identify}</TableCell>
+                                            <TableCell>{company.status ? <Check color='#26cc05' /> : <X color="#ff0000" />}</TableCell>
+                                            <TableCell>
+                                                <Button variant="ghost" size="icon" onClick={() => editUserCompany(company)}>
+                                                    <Pencil className="h-4 w-4" />
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    )) :
                                     <TableRow>
                                         {!loader && (
                                             <TableCell colSpan={7} className="text-center py-6 text-gray-500">
@@ -190,6 +201,18 @@ export const Companies = () => {
                             <Loader></Loader>
                         )}
                     </div>
+
+                    {(dataTable.length / rowsPerPage) > 1 && (
+                        <div className="flex items-center justify-end px-8">
+                            <Paginator
+                                page={page}
+                                rowsPerPage={rowsPerPage}
+                                changePage={handleChangePage}
+                                maxPage={dataTable.length / rowsPerPage}>
+                            </Paginator>
+                        </div>
+                    )}
+
                 </CardContent>
             </Card>
 

@@ -56,6 +56,7 @@ export const Reports: FC<IFormReportProps> = ({ open, onClose, onSubmit }) => {
 
     useEffect(() => {
         getCompaniesApi();
+        form.reset();
     }, [open])
 
     const form = useForm<IFormReport>({

@@ -16,6 +16,7 @@ import { Switch } from '@/components/ui/switch';
 import { Snackbar } from '@/components/snackbar/Snackbar';
 import { Loader } from '@/components/loaders/Loader';
 import { ScreenLoader } from '@/components/loaders/ScreenLoader';
+import { Paginator } from '@/components/paginator/Paginator';
 export const Workers = () => {
 
     const [workers, setWorkers] = useState<IUser[]>([]);
@@ -29,6 +30,14 @@ export const Workers = () => {
     const [idUser, setIdUser] = useState<number>(0);
     const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
     const [responseApi, setResponseApi] = useState<IBaseResponse>({} as IBaseResponse);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleChangePage = (page: number, newPage: number) => {
+        setPage(page);
+        setRowsPerPage(newPage);
+    };
+
 
     const handleShowSnackbar = () => {
         setShowSnackbar(true);
@@ -139,21 +148,23 @@ export const Workers = () => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {dataTable && dataTable.length > 0 ? dataTable.map((worker) => (
-                                    <TableRow key={worker.id}>
-                                        <TableCell>{worker.firstName}</TableCell>
-                                        <TableCell>{worker.lastName}</TableCell>
-                                        <TableCell>{worker.email}</TableCell>
-                                        <TableCell>{worker.specialty}</TableCell>
-                                        <TableCell>{worker.identify}</TableCell>
-                                        <TableCell>{worker.status ? <Check color='#26cc05' /> : <X color="#ff0000" />}</TableCell>
-                                        <TableCell>
-                                            <Button variant="ghost" size="icon" onClick={() => editWorker(worker)}>
-                                                <Pencil className="h-4 w-4" />
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                )) :
+                                {dataTable && dataTable.length > 0 ? dataTable
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((worker) => (
+                                        <TableRow key={worker.id}>
+                                            <TableCell>{worker.firstName}</TableCell>
+                                            <TableCell>{worker.lastName}</TableCell>
+                                            <TableCell>{worker.email}</TableCell>
+                                            <TableCell>{worker.specialty}</TableCell>
+                                            <TableCell>{worker.identify}</TableCell>
+                                            <TableCell>{worker.status ? <Check color='#26cc05' /> : <X color="#ff0000" />}</TableCell>
+                                            <TableCell>
+                                                <Button variant="ghost" size="icon" onClick={() => editWorker(worker)}>
+                                                    <Pencil className="h-4 w-4" />
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    )) :
                                     <TableRow>
                                         {!loader && (
                                             <TableCell colSpan={7} className="text-center py-6 text-gray-500">
@@ -168,6 +179,17 @@ export const Workers = () => {
                             <Loader></Loader>
                         )}
                     </div>
+
+                    {(dataTable.length / rowsPerPage) > 1 && (
+                        <div className="flex items-center justify-end px-8">
+                            <Paginator
+                                page={page}
+                                rowsPerPage={rowsPerPage}
+                                changePage={handleChangePage}
+                                maxPage={dataTable.length / rowsPerPage}>
+                            </Paginator>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 

@@ -2,17 +2,16 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { formatDate } from '@/helper/parsers'
 import { IFiles } from '@/interfaces/user.interface'
-import { Eye, Pencil, Trash2 } from 'lucide-react'
+import { Eye, Trash2 } from 'lucide-react'
 import { FC } from 'react'
 
-
-
+export type ActionDialog = 'see' | 'delete';
 export interface ICardFiles {
     file: IFiles,
-    openReportDialog: (file: IFiles) => void,
+    openReportDialog: (file: IFiles, action: ActionDialog) => void,
 }
 
-export const CardFiles: FC<ICardFiles> = ({ file, openReportDialog }) => {
+export const CardFiles: FC<ICardFiles> = ({ file, openReportDialog,  }) => {
 
     return (
         <div className='w-full my-2'>
@@ -36,13 +35,10 @@ export const CardFiles: FC<ICardFiles> = ({ file, openReportDialog }) => {
 
                         <div className='w-full mt-3 md:mt-0 md:w-auto'>
                             <div className=' flex items-center justify-between'>
-                                <Button variant="ghost" size="icon" onClick={() => openReportDialog(file)}>
+                                <Button variant="ghost" size="icon" onClick={() => openReportDialog(file, 'see')}>
                                     <Eye className="mr-2 h-4 w-4" />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="mr-2">
-                                    <Pencil className="h-4 w-4" />
-                                </Button>
-                                <Button variant="ghost" size="icon">
+                                <Button variant="ghost" size="icon" onClick={() => openReportDialog(file, 'delete')}>
                                     <Trash2 className="h-4 w-4" />
                                 </Button>
                             </div>
